@@ -137,11 +137,30 @@ label {
     font-size: 14px;
 }
 
+.error {
+    color: #ff4d4d;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: -6px;
+    margin-bottom: 6px;
+    background: rgba(0,0,0,0.2);
+    padding: 4px 8px;
+    border-radius: 6px;
+    opacity: 0.9;
+}
+
+
+.input-error {
+    border: 1px solid #ff4d4d;
+    transition: 0.2s;
+}
+
 @media (max-width: 768px) {
     .login-card {
         left: 50%;
         width: 90%;
     }
+    
 }
 
 
