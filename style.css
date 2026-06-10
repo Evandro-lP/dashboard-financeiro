@@ -163,4 +163,191 @@ label {
     
 }
 
+@media (max-width: 900px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
+@media (max-width: 600px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/*dashboard*/
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    background-color: #111827;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar a {
+    color: #cbd5e1;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.sidebar a:hover {
+    background: #1f2937;
+    color: white;
+}
+
+.main-dashboard {
+    flex: 1;
+    padding: 24px;
+    display: grid;
+    gap: 20px;
+
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+        "cards cards"
+        "chart transacoes"
+        "acoes acoes";
+
+    position: relative;
+}
+
+
+.main-dashboard::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at top,
+        rgba(34, 197, 94, 0.12),
+        transparent 60%
+    );
+    pointer-events: none;
+}
+
+.page-dashboard {
+    background: #B5C503;
+}
+
+.cards {
+    grid-area: cards;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    min-height: 110px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    transition: 0.3s ease;
+}
+
+.card h3 {
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.card p {
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.card:first-child {
+    background: #243447;
+    border: 1px solid #334155;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    min-height: 110px;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    background: #243447;
+}
+
+.chart, .transacoes, .acoes {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.chart {
+    grid-area: "chart";
+}
+
+.chart-box {
+    height: 180px;
+    background: #0f172a;
+    border: 1px dashed #334155;
+    border-radius: 10px;
+    margin-top: 12px;
+}
+
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    margin-top: 10px;
+    background: #0f172a;
+    border-radius: 8px;
+}
+
+.transacoes {
+    grid-area: "transacoes";
+}
+
+.income {
+    color: #22c55e;
+    font-weight: bold;
+}
+
+.expense {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+.acoes {
+    grid-area: "acoes";
+    display: flex;
+    gap: 12px;
+}
+
+.acoes button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #16c172;
+    color: #0f172a;
+    font-weight: bold;
+}
+
+.acoes button:last-child {
+    background: #ef4444;
+    color: white;
+}

@@ -1,45 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
     <title>Dashboard Financeiro</title>
 </head>
+
 <body>
     <main>
         <section class="container-login">
             <div class="login-img"></div>
-                <div class="login-card">
+            <div class="login-card">
                 <h1>Bem-vindo ao Dashboard</h1>
                 <p>Gerencie suas finanças com segurança.</p>
-            <form class="form-group" action="login.php" method="post">
+                <form class="form-group" action="login.php" method="post">
 
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email" required>
-                <small class="error" id="email-error"></small>
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" required>
+                    <small class="error" id="email-error"></small>
 
-                <label for="senha">Senha:</label>
-                <input type="password" name="senha" id="senha" required>
-                <small class="error" id="senha-error"></small>
-                
-                <div class="checkbox-group">
-                <input type="checkbox" id="lembrar" name="lembrar">
-                <label for="lembrar">Lembrar Senha</label>
-                </div>
-              
+                    <label for="senha">Senha:</label>
+                    <input type="password" name="senha" id="senha" required>
+                    <small class="error" id="senha-error"></small>
 
-                <button type="submit" id="btn">Entrar</button>
-                
-                <a href="#">Esqueceu sua senha?</a>
-            </form>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="lembrar" name="lembrar">
+                        <label for="lembrar">Lembrar Senha</label>
+                    </div>
+
+
+                    <button type="submit" id="btn">Entrar</button>
+
+                    <a href="#">Esqueceu sua senha?</a>
+                </form>
             </div>
-            
+
         </section>
     </main>
     <script src="script.js"></script>
 </body>
+
 </html>
