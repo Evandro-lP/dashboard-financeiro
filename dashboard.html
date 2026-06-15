@@ -25,51 +25,74 @@
             </nav>
         </aside>
 
-       
-        <main class="main-dashboard">
- <header class="topbar">
-            <h1>Bem-vindo 👋</h1>
-            <div class="user">Evandro</div>
-        </header>
-            <section class="cards">
-                <div class="card">
-                    <h3>Saldo</h3>
-                    <p>30.000</p>
-                </div>
-                <div class="card">
-                    <h3>Receitas</h3>
-                    <p>30.000</p>
-                </div>
-                <div class="card">
-                    <h3>Despesas</h3>
-                    <p>30.000</p>
-                </div>
-            </section>
-            <section class="chart">
-    <h2>Fluxo Financeiro</h2>
-    <div class="chart-box">
-        <!-- futuro gráfico aqui -->
+       <main class="main-dashboard">
+<section class="hero">
+
+    <header class="topbar">
+        <h1>Bem-vindo <span class="user">Evandro</span></h1>
+    </header>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Saldo</h3>
+            <p id="saldo">30.000</p>
+        </div>
+
+        <div class="card">
+            <h3>Receitas</h3>
+            <p id="receitas">30.000</p>
+        </div>
+
+        <div class="card">
+            <h3>Despesas</h3>
+            <p id="despesas">30.000</p>
+        </div>
     </div>
+
 </section>
 
-    <section class="transacoes">
-    <h2>Últimas transações</h2>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <section class="content-grid">
 
-    <div class="transaction">
-        <span>Freela</span>
-        <span class="income">+R$ 500</span>
-    </div>
+        <div class="chart">
+            <h2>Fluxo Financeiro</h2>
+            <div class="chart-box"></div>
+        </div>
 
-    <div class="transaction">
-        <span>Mercado</span>
-        <span class="expense">-R$ 120</span>
-    </div>
-</section>
-            <section class="acoes">
-                <button type="button">+ Adicionar Receita</button>
-                <button type="button">- Adicionar Despesa</button>
-            </section>
-        </main>
+        <div class="transacoes">
+            <h2>Últimas transações</h2>
+
+            <div class="transaction-list">
+                <div class="transaction">
+                <span>Freela</span>
+                <span class="income">+R$ 500</span>
+            </div>
+
+            <div class="transaction">
+                <span>Mercado</span>
+                <span class="expense">-R$ 120</span>
+            </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="botbar">
+        <div class="botbar-btn">
+            <button class="btn-receita" type="button"> + Adicionar Receita</button>
+            <button class="btn-despesa" type="button"> - Adicionar Despesa</button>
+        </div>
+        <div class="botbar-metas">
+            <div class="meta-card">
+                <h2>Meta longo prazo</h2>
+                <p>hb20 sedan</p>
+            </div>
+            <div class="meta-card">
+                <h2>Meta curto prazo</h2>
+                <p>web can</p>
+            </div>
+        </div>
+    </section>
     </div>
 </body>
 
