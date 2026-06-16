@@ -461,3 +461,24 @@ label {
   min-width: 120px;
   justify-content: flex-end;
 }
+
+.edit-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #60a5fa; /* azul leve pro editar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease;
+}
+
+.edit-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.edit-btn:hover {
+  transform: scale(1.2);
+  color: #3b82f6;
+}
