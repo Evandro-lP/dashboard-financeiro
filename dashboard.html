@@ -25,105 +25,117 @@
             </nav>
         </aside>
 
-       <main class="main-dashboard">
-<section class="hero">
+        <main class="main-dashboard">
+            <section class="hero">
 
-    <header class="topbar">
-        <h1>Bem-vindo <span class="user">Evandro</span></h1>
-    </header>
+                <header class="topbar">
+                    <h1>Bem-vindo <span class="user">Evandro</span></h1>
+                </header>
 
-    <div class="cards">
-        <div class="card">
-            <h3>Saldo</h3>
-            <p id="saldo">30.000</p>
-        </div>
+                <div class="cards">
+                    <div class="card">
+                        <h3>Saldo</h3>
+                        <p id="saldo">30.000</p>
+                    </div>
 
-        <div class="card">
-            <h3>Receitas</h3>
-            <p id="receitas">30.000</p>
-        </div>
+                    <div class="card">
+                        <h3>Receitas</h3>
+                        <p id="receitas">30.000</p>
+                    </div>
 
-        <div class="card">
-            <h3>Despesas</h3>
-            <p id="despesas">30.000</p>
-        </div>
-    </div>
+                    <div class="card">
+                        <h3>Despesas</h3>
+                        <p id="despesas">30.000</p>
+                    </div>
+                </div>
 
-</section>
+            </section>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <section class="content-grid">
+            <!-- CONTEÚDO PRINCIPAL -->
+            <section class="content-grid">
 
-        <div class="chart">
-            <h2>Fluxo Financeiro</h2>
-            <div class="chart-box"></div>
-        </div>
+                <div class="chart">
+                    <h2>Fluxo Financeiro</h2>
+                    <div class="chart-box"></div>
+                </div>
 
-        <div class="transacoes">
-            <h2>Últimas transações</h2>
+                <div class="transacoes">
+                    <h2>Últimas transações</h2>
 
-            <div class="transaction-list">
-                <div class="transaction">
-                <span>Freela</span>
-                <span class="income">+R$ 500</span>
-            </div>
+                    <div class="transaction-list">
+                        <div class="transaction">
+                            <span>Freela</span>
+                            <span class="income">+R$ 500</span>
+                        </div>
 
-            <div class="transaction">
-                <span>Mercado</span>
-                <span class="expense">-R$ 120</span>
-            </div>
-            </div>
-        </div>
+                        <div class="transaction">
+                            <span>Mercado</span>
+                            <span class="expense">-R$ 120</span>
+                        </div>
+                    </div>
+                </div>
 
-    </section>
+            </section>
 
-    <section class="botbar">
-        <div class="botbar-btn">
-            <button class="btn-receita" type="button"> + Adicionar Receita</button>
-            <button class="btn-despesa" type="button"> - Adicionar Despesa</button>
-        </div>
-        <div class="botbar-metas">
-            <div class="meta-card">
-                <h2>Meta longo prazo</h2>
-                <p>hb20 sedan</p>
-            </div>
-            <div class="meta-card">
-                <h2>Meta curto prazo</h2>
-                <p>web can</p>
-            </div>
-        </div>
-    </section>
+            <section class="botbar">
+                <div class="botbar-btn">
+                    <button class="btn-receita" type="button"> + Adicionar Receita</button>
+                    <button class="btn-despesa" type="button"> - Adicionar Despesa</button>
+                </div>
+                <div class="botbar-metas">
+                    <div class="meta-card">
+                        <h2>Meta longo prazo</h2>
+                        <p>hb20 sedan</p>
+                    </div>
+                    <div class="meta-card">
+                        <h2>Meta curto prazo</h2>
+                        <p>web can</p>
+                    </div>
+                </div>
+            </section>
     </div>
     <!-- modal de adicionar transação -->
     <div class="modal hidden" id="modal">
-    <div class="modal-content">
+        <div class="modal-content">
 
-        <h2 id="modal-title">Adicionar</h2>
+            <h2 id="modal-title">Adicionar</h2>
+            <div id="form-error" class="form-error hidden"></div>
 
-        <input type="text" id="input-nome" placeholder="Descrição">
-        <input type="number" id="input-valor" placeholder="Valor">
+            <input type="text" id="input-nome" placeholder="Descrição">
 
-        <div class="modal-actions">
-            <button id="btn-salvar">Salvar</button>
-            <button id="btn-fechar">Cancelar</button>
+            <input type="number" id="input-valor" placeholder="Valor">
+
+            <select id="input-categoria">
+                <option value="">Selecione uma categoria</option>
+                <option value="alimentacao">Alimentação</option>
+                <option value="transporte">Transporte</option>
+                <option value="salario">Salário</option>
+                <option value="lazer">Lazer</option>
+                <option value="contas">Contas</option>
+            </select>
+            
+            <div class="modal-actions">
+                <button id="btn-salvar">Salvar</button>
+                <button id="btn-fechar">Cancelar</button>
+            </div>
+
         </div>
-
     </div>
-</div>
-<!-- modal de confirmação de excluir transação -->
-<div class="modal hidden" id="delete-modal">
-    <div class="modal-content">
+    <!-- modal de confirmação de excluir transação -->
+    <div class="modal hidden" id="delete-modal">
+        <div class="modal-content">
 
-        <h2>Excluir transação</h2>
-        <p>Tem certeza que deseja excluir esta transação?</p>
-        <div class="modal-actions">
-            <button id="btn-cancelar-delete">Cancelar</button>
-            <button id="btn-confirmar-delete">Excluir</button>
+            <h2>Excluir transação</h2>
+            <p>Tem certeza que deseja excluir esta transação?</p>
+            <div class="modal-actions">
+                <button id="btn-cancelar-delete">Cancelar</button>
+                <button id="btn-confirmar-delete">Excluir</button>
+            </div>
+
         </div>
-
     </div>
-</div>
 
-<script src="dashboard.js"></script>
+    <script src="dashboard.js"></script>
 </body>
+
 </html>

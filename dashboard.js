@@ -10,6 +10,7 @@ let tipoAtual = "";
 // editar transação
 let transacaoParaEditar = null;
 
+
 const listaTransacoes = document.querySelector(".transaction-list");
 // painel principal
 const saldoEl = document.getElementById("saldo");
@@ -23,6 +24,7 @@ const modal = document.getElementById("modal");
 const inputNome = document.getElementById("input-nome");
 const inputValor = document.getElementById("input-valor");
 const btnSalvar = document.getElementById("btn-salvar");
+btnSalvar.disabled = true;
 const btnFechar = document.getElementById("btn-fechar");
 // modal de exclusão
 const deleteModal = document.getElementById("delete-modal");
@@ -30,6 +32,9 @@ const btnCancelarDelete = document.getElementById("btn-cancelar-delete");
 const btnConfirmarDelete = document.getElementById("btn-confirmar-delete");
 
 const modalTitle = document.getElementById("modal-title");
+const formError = document.getElementById("form-error");
+const inputCategoria = document.getElementById("input-categoria");
+
 
 function atualizarModalUI() {
   if (transacaoParaEditar) {
@@ -46,11 +51,18 @@ function calcularSaldo() {
   return receitas - despesas;
 }
 
+function formatarMoeda(valor) {
+  return valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
+console.log(formatarMoeda(1234.56));
 // Atualiza os valores exibidos no painel financeiro
 function atualizarDashboard() {
-  saldoEl.innerText = `R$ ${calcularSaldo()}`;
-  receitasEl.innerText = `R$ ${receitas}`;
-  despesasEl.innerText = `R$ ${despesas}`;
+saldoEl.innerText = formatarMoeda(calcularSaldo());
+receitasEl.innerText = formatarMoeda(receitas);
+despesasEl.innerText = formatarMoeda(despesas);
 }
 
 
@@ -69,24 +81,41 @@ function fecharModal() {
 }
 
 function salvarTransacao() {
-  const nome = inputNome.value;
+  const nome = inputNome.value.trim();
   const valor = Number(inputValor.value);
+  const categoria = inputCategoria.value;
 
-  if (!nome || isNaN(valor)) return;
+  if (!nome) {
+    mostrarErro("Informe uma descrição válida");
+    return;
+  }
+
+  if (isNaN(valor) || valor <= 0) {
+    mostrarErro("Informe um valor maior que zero");
+    return;
+  }
+
+   if (!categoria) {
+    mostrarErro("Selecione uma categoria");
+    return;
+  }
 
   // 👉 MODO EDITAR
   if (transacaoParaEditar) {
-    transacaoParaEditar.nome = nome;
-    transacaoParaEditar.valor = valor;
-    transacaoParaEditar = null;
-  } 
+  transacaoParaEditar.nome = nome;
+  transacaoParaEditar.valor = valor;
+  transacaoParaEditar.categoria = categoria;
+  transacaoParaEditar = null;
+}
   // 👉 MODO CRIAR
   else {
     transacoes.push({
       id: Date.now(),
       nome,
       valor,
-      tipo: tipoAtual
+      tipo: tipoAtual,
+      categoria,
+      createdAt: new Date().toISOString()
     });
   }
 
@@ -100,6 +129,10 @@ function salvarTransacao() {
   fecharModal();
 }
 
+
+inputNome.addEventListener("input", validarFormulario);
+inputValor.addEventListener("input", validarFormulario);
+inputCategoria.addEventListener("change", validarFormulario);
 // Abre modal para adicionar receita
 btnReceita.addEventListener("click", () => {
   tipoAtual = "income";
@@ -113,6 +146,7 @@ btnReceita.addEventListener("click", () => {
 
   modal.classList.remove("hidden");
   inputNome.focus();
+  validarFormulario();
 });
 
 // Abre modal para adicionar despesa
@@ -127,6 +161,7 @@ btnDespesa.addEventListener("click", () => {
   atualizarModalUI(); // muda título e botão
 
   modal.classList.remove("hidden");
+  validarFormulario();
 });
 
 // Fecha modal
@@ -178,7 +213,11 @@ function carregarDoStorage() {
   } catch {
     transacoes = [];
   }
-
+transacoes = transacoes.map(t => ({
+  ...t,
+  createdAt: t.createdAt || new Date().toISOString()
+}));
+  
   atualizarDashboard();
   renderizarTransacoes();
 }
@@ -197,8 +236,19 @@ function renderizarTransacoes() {
 
   <div class="right-side">
     <span class="${t.tipo}">
-      ${t.tipo === "income" ? "+" : "-"}R$ ${t.valor}
+      ${t.tipo === "income" ? "+" : "-"} ${formatarMoeda(t.valor)}
     </span>
+
+     <span class="categoria">
+      ${t.categoria}
+    </span>
+    
+
+    <span class="data">${formatarData(t.createdAt)}</span>
+
+    <button class="edit-btn">
+      ✏️
+    </button>
 
     <button class="delete-btn">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
@@ -212,19 +262,6 @@ function renderizarTransacoes() {
   </div>
 `;
 
-div.innerHTML = `
-  <span>${t.nome}</span>
-
-  <div class="right-side">
-    <span class="${t.tipo}">
-      ${t.tipo === "income" ? "+" : "-"}R$ ${t.valor}
-    </span>
-
-    <button class="edit-btn">✏️</button>
-    <button class="delete-btn">🗑</button>
-  </div>
-`;
-
     div.querySelector(".delete-btn").addEventListener("click", () => {
   transacaoParaExcluir = t.id;
   deleteModal.classList.remove("hidden");
@@ -234,17 +271,7 @@ div.querySelector(".edit-btn").addEventListener("click", () => {
   abrirModalEdicao(t);
 });
 
-div.querySelector(".edit-btn").addEventListener("click", () => {
-  transacaoParaEditar = t;
 
-  inputNome.value = t.nome;
-  inputValor.value = t.valor;
-  tipoAtual = t.tipo;
-
-  atualizarModalUI();
-
-  modal.classList.remove("hidden");
-});
 
     listaTransacoes.appendChild(div);
   });
@@ -286,12 +313,52 @@ function fecharDeleteModal() {
 
 function abrirModalEdicao(t) {
   transacaoParaEditar = t;
-
+  inputCategoria.value = t.categoria;
   inputNome.value = t.nome;
   inputValor.value = t.valor;
   tipoAtual = t.tipo;
-
+  atualizarModalUI();
   modal.classList.remove("hidden");
+  validarFormulario();
+}
+
+function mostrarErro(msg) {
+  formError.innerText = msg;
+  formError.classList.remove("hidden");
+
+  setTimeout(() => {
+    formError.classList.add("hidden");
+  }, 2500);
+}
+
+function validarFormulario() {
+  const nome = inputNome.value.trim();
+  const valor = Number(inputValor.value);
+  const categoria = inputCategoria.value;
+
+  const valido =
+    nome &&
+    !isNaN(valor) &&
+    valor > 0 &&
+    categoria;
+
+  btnSalvar.disabled = !valido;
+
+  return valido;
+}
+
+function formatarData(dataISO) {
+  if (!dataISO) return "—";
+
+  const data = new Date(dataISO);
+
+  if (isNaN(data.getTime())) return "—";
+
+  return data.toLocaleDateString("pt-BR", {
+  day: "2-digit",
+  month: "2-digit"
+});
+
 }
 
 carregarDoStorage();
