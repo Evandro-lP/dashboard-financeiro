@@ -273,7 +273,7 @@ label {
     display: flex;
     gap: 24px;
     flex: 1;
-    margin-bottom: 48px;
+    margin-bottom: 6px;
 }
 
 .chart {
@@ -295,6 +295,26 @@ label {
 .chart:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+}
+.chart-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chart-box {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:500px;
+}
+
+.charts-row {
+    display: flex;
+    gap: 24px;
+    width: 100%;
 }
 
 .transacoes {
@@ -416,6 +436,9 @@ label {
     gap: 12px;
 }
 
+#modal-title {
+    color: white;
+}
 .modal.closing {
     opacity: 0;
     visibility: hidden;
@@ -424,6 +447,12 @@ label {
 
 .hidden {
     display: none;
+}
+
+#input-categoria {
+    padding: 6px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .delete-btn {
@@ -510,4 +539,10 @@ button:disabled {
   font-size: 12px;
   opacity: 0.7;
   text-transform: capitalize;
+}
+
+.left-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

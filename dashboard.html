@@ -53,11 +53,27 @@
 
             <!-- CONTEÚDO PRINCIPAL -->
             <section class="content-grid">
-
+            
                 <div class="chart">
-                    <h2>Fluxo Financeiro</h2>
-                    <div class="chart-box"></div>
-                </div>
+
+    <div class="charts-row">
+
+        <div class="chart-item">
+            <h2>Fluxo Financeiro</h2>
+            <div class="chart-box">
+                <canvas id="grafico-categorias"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-item">
+            <h2>Resumo Financeiro</h2>
+            <div class="chart-box">
+                <canvas id="grafico-resumo"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
 
                 <div class="transacoes">
                     <h2>Últimas transações</h2>
@@ -107,11 +123,11 @@
 
             <select id="input-categoria">
                 <option value="">Selecione uma categoria</option>
-                <option value="alimentacao">Alimentação</option>
+                <option value="delivery">Delivery</option>
                 <option value="transporte">Transporte</option>
                 <option value="salario">Salário</option>
-                <option value="lazer">Lazer</option>
-                <option value="contas">Contas</option>
+                <option value="mercado">Mercado</option>
+                <option value="outros">Outros</option>
             </select>
             
             <div class="modal-actions">
@@ -134,7 +150,9 @@
 
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="dashboard.js"></script>
 </body>
 
