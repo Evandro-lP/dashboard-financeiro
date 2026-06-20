@@ -18,6 +18,11 @@ let transacaoParaExcluir = null;
 let grafico;
 let graficoResumo;
 
+// metas
+let metas = [];
+let metaParaEditar = null;
+let tipoMetaAtual = null;
+
 // ======================
 // Configurações
 // ======================
@@ -80,6 +85,25 @@ const deleteModal = document.getElementById("delete-modal");
 const btnCancelarDelete = document.getElementById("btn-cancelar-delete");
 const btnConfirmarDelete = document.getElementById("btn-confirmar-delete");
 
+// Modal Metas
+const btnMetaLongo = document.querySelector(".btn-meta-longo");
+const btnMetaCurto = document.querySelector(".btn-meta-curto");
+
+const modalMeta = document.getElementById("modal-meta");
+const modalMetaTitle = document.getElementById("meta-modal-title");
+
+const inputMetaNome = document.getElementById("input-meta-nome");
+const inputMetaObjetivo = document.getElementById("input-meta-objetivo");
+const inputMetaAtual = document.getElementById("input-meta-atual");
+
+const metaFormError = document.getElementById("meta-form-error");
+
+const btnMetaSalvar = document.getElementById("btn-meta-salvar");
+const btnMetaFechar = document.getElementById("btn-meta-fechar");
+
+const metaContentLongo = document.getElementById("meta-content-longo");
+const metaContentCurto = document.getElementById("meta-content-curto");
+
 // ======================
 // Funções utilitárias
 // ======================
@@ -138,6 +162,7 @@ function salvarNoStorage() {
   localStorage.setItem("receitas", receitas);
   localStorage.setItem("despesas", despesas);
   localStorage.setItem("transacoes", JSON.stringify(transacoes));
+  localStorage.setItem("metas", JSON.stringify(metas));
 }
 
 function carregarDoStorage() {
@@ -358,6 +383,106 @@ function validarFormulario() {
   return valido;
 }
 
+function abrirModalMeta() {
+    inputMetaNome.value = "";
+    inputMetaObjetivo.value = "";
+    inputMetaAtual.value = "";
+
+    metaFormError.classList.add("hidden");
+
+    modalMeta.classList.remove("hidden");
+
+    inputMetaAtual.focus();
+}
+
+function fecharModalMeta() {
+  modalMeta.classList.add("hidden");
+}
+
+function validarFormularioMeta() {
+  const nome = inputMetaNome.value.trim();
+  const objetivo = Number(inputMetaObjetivo.value);
+  const atual = Number(inputMetaAtual.value);
+
+  const valido =
+    nome !== "" &&
+    objetivo > 0 &&
+    atual <= objetivo;
+
+  return valido;
+}
+
+function salvarMeta() {
+  const valido = validarFormularioMeta();
+
+  if (!valido) {
+    mostrarErroMeta();
+    return;
+  }
+
+  const nome = inputMetaNome.value.trim();
+  const objetivo = Number(inputMetaObjetivo.value);
+  const atual = Number(inputMetaAtual.value);
+
+  const novaMeta = {
+    id: Date.now(),
+    nome,
+    objetivo,
+    atual,
+    tipo: tipoMetaAtual,
+    createdAt: new Date().toISOString(),
+  };
+    metas.push(novaMeta);
+  atualizarInterface();
+
+  fecharModalMeta();
+}
+
+function renderizarMetas() {
+  const metasLongo = metas.filter((meta) => meta.tipo === "longo");
+  const metasCurto = metas.filter((meta) => meta.tipo === "curto");
+
+  if (metasLongo.length === 0 && metasCurto.length === 0) {
+    return;
+  }
+
+  if (metasLongo.length > 0) {
+    
+    const metaLongo = metasLongo[0];
+
+    metaLongoContent.innerHTML = `
+  <div class="meta-info">
+    <h3>${metaLongo.nome}</h3>
+    <p>${metaLongo.atual} / ${metaLongo.objetivo}</p>
+
+    <div class="meta-progress">
+        <div class="meta-progress-fill"></div>
+    </div>
+
+    <span class="meta-percentual">0%</span>
+</div>
+`;
+  }
+
+  if (metasCurto.length > 0) {
+    
+    const metaCurto = metasCurto[0];
+
+    metaCurtoContent.innerHTML = `
+  <div class="meta-info">
+    <h3>${metaCurto.nome}</h3>
+    <p>${metaCurto.atual} / ${metaCurto.objetivo}</p>
+
+    <div class="meta-progress">
+        <div class="meta-progress-fill"></div>
+    </div>
+
+    <span class="meta-percentual">0%</span>
+</div>
+`;
+  }
+}
+
 // ======================
 // Gráficos
 // ======================
@@ -568,6 +693,21 @@ btnConfirmarDelete.addEventListener("click", () => {
   atualizarInterface();
 
   fecharDeleteModal();
+});
+
+// Modal de meta
+btnMetaLongo.addEventListener("click", () => {
+  tipoMetaAtual = "longo";
+  abrirModalMeta();
+});
+
+btnMetaCurto.addEventListener("click", () => {
+  tipoMetaAtual = "curto";
+  abrirModalMeta();
+});
+
+btnMetaFechar.addEventListener("click", () => {
+  fecharModalMeta();
 });
 
 // ======================

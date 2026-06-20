@@ -1,0 +1,28 @@
+<div class="modal hidden" id="modal-meta">
+    <div class="modal-content">
+        <h2 id="meta-modal-title">Nova Meta</h2>
+
+        <div id="meta-form-error" class="form-error hidden"></div>
+
+        <input type="text" id="input-meta-nome" placeholder="Nome da meta">
+
+        <input type="number" id="input-meta-objetivo" placeholder="Valor da meta">
+
+        <input type="number" id="input-meta-atual" placeholder="Valor já economizado">
+
+        <div class="modal-actions">
+                <button id="btn-meta-salvar">Salvar</button>
+                <button id="btn-meta-fechar">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<div class="meta-info">
+    <h3>${metaLongo.nome}</h3>
+    <p>${metaLongo.atual} / ${metaLongo.objetivo}</p>
+</div>
+
+<div class="meta-progress">
+    <div class="meta-progress-fill"></div>
+    <span class="meta-percentual">0%</span>
+</div>

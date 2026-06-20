@@ -115,7 +115,7 @@
                             </button>
                         </div>
             
-                        <div class="meta-content">
+                        <div class="meta-content" id="meta-content-longo">
                             <p>Crie sua primeira meta.</p>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                             </button>
                         </div>
             
-                        <div class="meta-content">
+                        <div class="meta-content" id="meta-content-curto">
                             <p>Crie sua primeira meta.</p>
                         </div>
                     </div>
@@ -175,6 +175,25 @@
                 <button id="btn-confirmar-delete">Excluir</button>
             </div>
 
+        </div>
+    </div>
+    <!-- Modal de adição de metas  -->
+    <div class="modal hidden" id="modal-meta">
+        <div class="modal-content">
+            <h2 id="meta-modal-title">Nova Meta</h2>
+    
+            <div id="meta-form-error" class="form-error hidden"></div>
+    
+            <input type="text" id="input-meta-nome" placeholder="Nome da meta">
+    
+            <input type="number" id="input-meta-objetivo" placeholder="Valor da meta">
+    
+            <input type="number" id="input-meta-atual" placeholder="Valor já economizado">
+    
+            <div class="modal-actions">
+                <button id="btn-meta-salvar">Salvar</button>
+                <button id="btn-meta-fechar">Cancelar</button>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
