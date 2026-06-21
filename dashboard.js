@@ -147,6 +147,7 @@ function atualizarInterface() {
   atualizarDashboard();
   salvarNoStorage();
   renderizarTransacoes();
+  renderizarMetas();
 
   const dadosCategorias = calcularPorCategoria();
 
@@ -169,7 +170,7 @@ function carregarDoStorage() {
   const receitasSalvas = localStorage.getItem("receitas");
   const despesasSalvas = localStorage.getItem("despesas");
   const transacoesSalvas = localStorage.getItem("transacoes");
-
+  const metasSalvas = localStorage.getItem("metas");
   receitas = receitasSalvas ? Number(receitasSalvas) : 0;
   despesas = despesasSalvas ? Number(despesasSalvas) : 0;
 
@@ -177,6 +178,12 @@ function carregarDoStorage() {
     transacoes = JSON.parse(transacoesSalvas) || [];
   } catch {
     transacoes = [];
+  }
+
+  try {
+    metas = JSON.parse(metasSalvas) || [];
+  } catch {
+    metas = [];
   }
 
   // Garante que transações antigas tenham uma data de criação
@@ -450,36 +457,56 @@ function renderizarMetas() {
     
     const metaLongo = metasLongo[0];
 
-    metaLongoContent.innerHTML = `
+    const porcentagem = Math.round(
+        (metaLongo.atual / metaLongo.objetivo) * 100
+    );
+
+    metaContentLongo.innerHTML = `
   <div class="meta-info">
     <h3>${metaLongo.nome}</h3>
-    <p>${metaLongo.atual} / ${metaLongo.objetivo}</p>
+    <p>${formatarMoeda(metaLongo.atual)} / ${formatarMoeda(metaLongo.objetivo)}</p>
 
     <div class="meta-progress">
-        <div class="meta-progress-fill"></div>
+        <div id="meta-longo-fill" class="meta-progress-fill"></div>
     </div>
 
-    <span class="meta-percentual">0%</span>
+    <span class="meta-percentual">${porcentagem}%</span>
 </div>
+
 `;
+
+const barraLongo = document.getElementById("meta-longo-fill");
+
+barraLongo.style.width = `${porcentagem}%`;
+
   }
 
   if (metasCurto.length > 0) {
     
     const metaCurto = metasCurto[0];
 
-    metaCurtoContent.innerHTML = `
+    const porcentagem = Math.round(
+        (metaCurto.atual / metaCurto.objetivo) * 100
+    );
+
+    metaContentCurto.innerHTML = `
   <div class="meta-info">
     <h3>${metaCurto.nome}</h3>
-    <p>${metaCurto.atual} / ${metaCurto.objetivo}</p>
+    <p>${formatarMoeda(metaCurto.atual)} / ${formatarMoeda(metaCurto.objetivo)}</p>
 
     <div class="meta-progress">
-        <div class="meta-progress-fill"></div>
+        <div id="meta-curto-fill" class="meta-progress-fill"></div>
     </div>
 
-    <span class="meta-percentual">0%</span>
+    <span class="meta-percentual">${porcentagem}%</span>
 </div>
+
+
 `;
+
+const barraCurto = document.getElementById("meta-curto-fill");
+
+barraCurto.style.width = `${porcentagem}%`;
   }
 }
 
@@ -710,6 +737,9 @@ btnMetaFechar.addEventListener("click", () => {
   fecharModalMeta();
 });
 
+btnMetaSalvar.addEventListener("click", () => {
+  salvarMeta();
+});
 // ======================
 // Inicialização
 // ======================
