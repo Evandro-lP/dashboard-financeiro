@@ -22,6 +22,7 @@ let graficoResumo;
 let metas = [];
 let metaParaEditar = null;
 let tipoMetaAtual = null;
+let modoEdicaoMeta = false;
 
 // ======================
 // Configurações
@@ -103,6 +104,17 @@ const btnMetaFechar = document.getElementById("btn-meta-fechar");
 
 const metaContentLongo = document.getElementById("meta-content-longo");
 const metaContentCurto = document.getElementById("meta-content-curto");
+
+const metaActionsLongo = document.getElementById("meta-longo-actions");
+const metaActionsCurto = document.getElementById("meta-curto-actions");
+
+const btnMetaAddLongo = document.getElementById("btn-meta-add-longo");
+const btnMetaAddCurto = document.getElementById("btn-meta-add-curto");
+
+const BtnMetaEditLongo = document.getElementById("btn-meta-edit-longo");
+const BtnMetaEditCurto = document.getElementById("btn-meta-edit-curto");
+const btnMetaDelete = document.getElementById("btn-meta-delete");
+
 
 // ======================
 // Funções utilitárias
@@ -390,16 +402,24 @@ function validarFormulario() {
   return valido;
 }
 
+
+
 function abrirModalMeta() {
-    inputMetaNome.value = "";
+  console.log(">>> abrirModalMeta"); 
+  
+  inputMetaNome.value = "";
     inputMetaObjetivo.value = "";
     inputMetaAtual.value = "";
 
+    modoEdicaoMeta = false;
+    metaParaEditar = null;
+
+    atualizarInterface();
     metaFormError.classList.add("hidden");
 
     modalMeta.classList.remove("hidden");
 
-    inputMetaAtual.focus();
+    inputMetaNome.focus();
 }
 
 function fecharModalMeta() {
@@ -411,19 +431,34 @@ function validarFormularioMeta() {
   const objetivo = Number(inputMetaObjetivo.value);
   const atual = Number(inputMetaAtual.value);
 
-  const valido =
-    nome !== "" &&
-    objetivo > 0 &&
-    atual <= objetivo;
+  if (!nome) {
+    mostrarErroMeta("Informe um nome para a meta.");
+    return false;
+  }
 
-  return valido;
+  if (isNaN(objetivo) || objetivo <= 0) {
+    mostrarErroMeta("Informe um objetivo maior que zero.");
+    return false;
+  }
+
+  if (isNaN(atual) || atual < 0) {
+    mostrarErroMeta("Informe um valor atual válido.");
+    return false;
+  }
+
+  if (atual > objetivo) {
+    mostrarErroMeta("O valor atual não pode ser maior que o objetivo.");
+    return false;
+  }
+
+  esconderErroMeta();
+  return true;
 }
 
 function salvarMeta() {
   const valido = validarFormularioMeta();
 
   if (!valido) {
-    mostrarErroMeta();
     return;
   }
 
@@ -431,7 +466,12 @@ function salvarMeta() {
   const objetivo = Number(inputMetaObjetivo.value);
   const atual = Number(inputMetaAtual.value);
 
-  const novaMeta = {
+  if (modoEdicaoMeta) {
+    metaParaEditar.nome = nome;
+    metaParaEditar.objetivo = objetivo;
+    metaParaEditar.atual = atual;
+} else {
+    const novaMeta = {
     id: Date.now(),
     nome,
     objetivo,
@@ -439,7 +479,12 @@ function salvarMeta() {
     tipo: tipoMetaAtual,
     createdAt: new Date().toISOString(),
   };
-    metas.push(novaMeta);
+
+  metas.push(novaMeta);
+}
+
+  
+    
   atualizarInterface();
 
   fecharModalMeta();
@@ -449,21 +494,20 @@ function renderizarMetas() {
   const metasLongo = metas.filter((meta) => meta.tipo === "longo");
   const metasCurto = metas.filter((meta) => meta.tipo === "curto");
 
-  if (metasLongo.length === 0 && metasCurto.length === 0) {
-    return;
-  }
-
   if (metasLongo.length > 0) {
-    
     const metaLongo = metasLongo[0];
 
     const porcentagem = Math.round(
-        (metaLongo.atual / metaLongo.objetivo) * 100
+      (metaLongo.atual / metaLongo.objetivo) * 100,
     );
 
     metaContentLongo.innerHTML = `
   <div class="meta-info">
-    <h3>${metaLongo.nome}</h3>
+
+    <div class="meta-header">
+        <h3>${metaLongo.nome}</h3>
+    </div>
+
     <p>${formatarMoeda(metaLongo.atual)} / ${formatarMoeda(metaLongo.objetivo)}</p>
 
     <div class="meta-progress">
@@ -471,22 +515,30 @@ function renderizarMetas() {
     </div>
 
     <span class="meta-percentual">${porcentagem}%</span>
+
 </div>
 
 `;
 
-const barraLongo = document.getElementById("meta-longo-fill");
+    const barraLongo = document.getElementById("meta-longo-fill");
 
-barraLongo.style.width = `${porcentagem}%`;
+    barraLongo.style.width = `${porcentagem}%`;
+    btnMetaLongo.classList.add("hidden");
+    metaActionsLongo.classList.remove("hidden");
+  } else {
+    metaContentLongo.innerHTML = `
+        <p>Crie sua primeira meta.</p>
+    `;
 
+    btnMetaLongo.classList.remove("hidden");
+    metaActionsLongo.classList.add("hidden");
   }
 
   if (metasCurto.length > 0) {
-    
     const metaCurto = metasCurto[0];
 
     const porcentagem = Math.round(
-        (metaCurto.atual / metaCurto.objetivo) * 100
+      (metaCurto.atual / metaCurto.objetivo) * 100,
     );
 
     metaContentCurto.innerHTML = `
@@ -504,12 +556,73 @@ barraLongo.style.width = `${porcentagem}%`;
 
 `;
 
-const barraCurto = document.getElementById("meta-curto-fill");
+    const barraCurto = document.getElementById("meta-curto-fill");
 
-barraCurto.style.width = `${porcentagem}%`;
+    barraCurto.style.width = `${porcentagem}%`;
+
+    btnMetaCurto.classList.add("hidden");
+    metaActionsCurto.classList.remove("hidden");
+  } else {
+    metaContentCurto.innerHTML = `
+        <p>Crie sua primeira meta.</p>
+    `;
+
+    btnMetaCurto.classList.remove("hidden");
+    metaActionsCurto.classList.add("hidden");
   }
 }
 
+function abrirModalEdicaoMeta(meta) {
+  console.log(">>> abrirModalEdicaoMeta");  
+  metaParaEditar = meta;
+    modoEdicaoMeta = true;
+
+    console.log(meta);
+    console.log(metaParaEditar);
+
+    atualizarModalMetaUI();
+
+    inputMetaNome.value = metaParaEditar.nome;
+    inputMetaObjetivo.value = metaParaEditar.objetivo;
+    inputMetaAtual.value = metaParaEditar.atual;
+    modalMeta.classList.remove("hidden");
+}
+
+function atualizarModalMetaUI() {
+   console.log("modoEdicaoMeta:", modoEdicaoMeta);  
+  
+  if (modoEdicaoMeta) {
+        modalMetaTitle.textContent = "Editar Meta";
+        btnMetaSalvar.textContent = "Salvar alterações";
+
+        btnMetaDelete.classList.remove("hidden");
+    } else {
+        modalMetaTitle.textContent = "Nova Meta";
+        btnMetaSalvar.textContent = "Adicionar";
+
+        btnMetaDelete.classList.add("hidden");
+    }
+}
+
+function excluirMeta() {
+    metas = metas.filter(meta => meta.id !== metaParaEditar.id);
+
+    metaParaEditar = null;
+    modoEdicaoMeta = false;
+
+    atualizarInterface();
+    fecharModalMeta();
+}
+
+function mostrarErroMeta(mensagem) {
+  metaFormError.textContent = mensagem;
+  metaFormError.classList.remove("hidden");
+}
+
+function esconderErroMeta() {
+  metaFormError.textContent = "";
+  metaFormError.classList.add("hidden");
+}
 // ======================
 // Gráficos
 // ======================
@@ -740,6 +853,20 @@ btnMetaFechar.addEventListener("click", () => {
 btnMetaSalvar.addEventListener("click", () => {
   salvarMeta();
 });
+
+BtnMetaEditLongo.addEventListener("click", () => {
+  const meta = metas.find(meta => meta.tipo === "longo");
+
+  abrirModalEdicaoMeta(meta);
+});
+
+BtnMetaEditCurto.addEventListener("click", () => {
+    const meta = metas.find(meta => meta.tipo === "curto");
+
+    abrirModalEdicaoMeta(meta);
+});
+
+btnMetaDelete.addEventListener("click", excluirMeta);
 // ======================
 // Inicialização
 // ======================

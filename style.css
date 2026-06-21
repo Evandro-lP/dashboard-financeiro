@@ -576,3 +576,31 @@ button:disabled {
 .meta-progress-fill {
     width: 0%;
 }
+
+.meta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meta-actions button {
+    background-color:#D1D6DC;
+    color: #111827;
+}
+
+.meta-actions button:hover {
+    cursor: pointer;
+    background-color: #495057;
+    color: #cbd5e1;
+}
+
+.meta-actions button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.modal-delete {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}

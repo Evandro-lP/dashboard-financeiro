@@ -53,27 +53,27 @@
 
             <!-- CONTEÚDO PRINCIPAL -->
             <section class="content-grid">
-            
+
                 <div class="chart">
 
-    <div class="charts-row">
+                    <div class="charts-row">
 
-        <div class="chart-item">
-            <h2>Fluxo Financeiro</h2>
-            <div class="chart-box">
-                <canvas id="grafico-categorias"></canvas>
-            </div>
-        </div>
+                        <div class="chart-item">
+                            <h2>Fluxo Financeiro</h2>
+                            <div class="chart-box">
+                                <canvas id="grafico-categorias"></canvas>
+                            </div>
+                        </div>
 
-        <div class="chart-item">
-            <h2>Resumo Financeiro</h2>
-            <div class="chart-box">
-                <canvas id="grafico-resumo"></canvas>
-            </div>
-        </div>
+                        <div class="chart-item">
+                            <h2>Resumo Financeiro</h2>
+                            <div class="chart-box">
+                                <canvas id="grafico-resumo"></canvas>
+                            </div>
+                        </div>
 
-    </div>
-</div>
+                    </div>
+                </div>
 
                 <div class="transacoes">
                     <h2>Últimas transações</h2>
@@ -98,42 +98,64 @@
                     <button class="btn-receita" type="button">
                         + Adicionar Receita
                     </button>
-            
+
                     <button class="btn-despesa" type="button">
                         - Adicionar Despesa
                     </button>
                 </div>
-            
+
                 <div class="botbar-metas">
-            
+
+                    <!-- Meta de Longo Prazo -->
                     <div class="meta-card">
                         <div class="meta-header">
                             <h2>Meta de longo prazo</h2>
-            
+
                             <button class="btn-meta-longo" type="button">
                                 + Adicionar
                             </button>
+
+                            <div id="meta-longo-actions" class="meta-actions hidden">
+                                <button id="btn-meta-edit-longo" class="btn-meta-edit-mini" type="button">
+                                    <i data-lucide="pencil"></i>
+                                </button>
+
+                                <button id="btn-meta-add-longo" class="btn-meta-add-mini" type="button">
+                                    <i data-lucide="plus"></i>
+                                </button>
+                            </div>
                         </div>
-            
+
                         <div class="meta-content" id="meta-content-longo">
                             <p>Crie sua primeira meta.</p>
                         </div>
                     </div>
-            
+
+                    <!-- Meta de Curto Prazo -->
                     <div class="meta-card">
                         <div class="meta-header">
                             <h2>Meta de curto prazo</h2>
-            
+
                             <button class="btn-meta-curto" type="button">
                                 + Adicionar
                             </button>
+
+                            <div id="meta-curto-actions" class="meta-actions hidden">
+                                <button id="btn-meta-edit-curto" class="btn-meta-edit-mini" type="button">
+                                    <i data-lucide="pencil"></i>
+                                </button>
+
+                                <button id="btn-meta-add-curto" class="btn-meta-add-mini" type="button">
+                                    <i data-lucide="plus"></i>
+                                </button>
+                            </div>
                         </div>
-            
+
                         <div class="meta-content" id="meta-content-curto">
                             <p>Crie sua primeira meta.</p>
                         </div>
                     </div>
-            
+
                 </div>
             </section>
     </div>
@@ -156,7 +178,7 @@
                 <option value="mercado">Mercado</option>
                 <option value="outros">Outros</option>
             </select>
-            
+
             <div class="modal-actions">
                 <button id="btn-salvar">Salvar</button>
                 <button id="btn-fechar">Cancelar</button>
@@ -181,19 +203,22 @@
     <div class="modal hidden" id="modal-meta">
         <div class="modal-content">
             <h2 id="meta-modal-title">Nova Meta</h2>
-    
+
             <div id="meta-form-error" class="form-error hidden"></div>
-    
+
             <input type="text" id="input-meta-nome" placeholder="Nome da meta">
-    
+
             <input type="number" id="input-meta-objetivo" placeholder="Valor da meta">
-    
+
             <input type="number" id="input-meta-atual" placeholder="Valor já economizado">
-    
+
             <div class="modal-actions">
-                <button id="btn-meta-salvar">Salvar</button>
                 <button id="btn-meta-fechar">Cancelar</button>
+                <button id="btn-meta-salvar">Salvar</button>
             </div>
+            <button id="btn-meta-delete" class="btn-delete-meta hidden">
+                    Excluir Meta
+                </button>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
