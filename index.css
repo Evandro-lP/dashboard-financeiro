@@ -1,0 +1,176 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter" , sans-serif;
+}
+
+body {
+    overflow: hidden;
+}
+
+.container-login {
+    position: relative;
+    height: 100vh;
+}
+
+.login-img {
+    width: 100%;
+    height: 100%;
+    background-image: url(./assets/img/Login.png);
+    background-size: cover;
+    background-position: center;
+}
+
+h1 {
+    margin-bottom: 16px;
+    font-family: "Lora" , sans-serif;
+}
+
+.login-card {
+    position: absolute;
+    top: 50%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+    max-width: 400px;
+    padding: 32px;
+
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.login-card p {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #343434;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+a {
+    text-decoration: none;
+    color: black;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: white;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: #343a40;
+    transition: width 0.3s ease; 
+}
+
+a:hover::after {
+    width: 100%;
+}
+
+
+input {
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    width: 100%;
+}
+input:focus {
+    outline: none;
+    border-color: #343a40;
+}
+
+button {
+    padding: 12px;
+    border-radius: 8px;
+    border: 0;
+    background-color: #343a40;
+    color: #dee2e6;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+button:hover {
+    background-color: #495057;
+}
+
+input[type="checkbox"] {
+    accent-color: #343434;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-group input {
+    width: 16px;
+    height: 16px;
+    accent-color: #343434;
+    margin: 0;
+}
+
+label {
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.error {
+    color: black;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: -6px;
+    margin-bottom: 6px;
+    background: rgba(0,0,0,0.2);
+    padding: 4px 8px;
+    border-radius: 6px;
+    opacity: 0.9;
+}
+
+
+.input-error {
+    border: 1px solid #ff4d4d;
+    transition: 0.2s;
+}
+
+@media (max-width: 768px) {
+    .login-card {
+        left: 50%;
+        width: 90%;
+    }
+    
+}
+
+@media (max-width: 900px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}

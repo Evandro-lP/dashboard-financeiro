@@ -39,11 +39,12 @@ form.addEventListener("submit", (e) => {
     }
 
     if (isValid) {
+        console.log("Novo login.js carregado");
         btn.textContent = "Entrando...";
         btn.disabled = true;
 
         setTimeout(() => {
-            window.location.href = "dashboard.html";
+            window.location.href = "pages/dashboard/dashboard.html";
         }, 1000);
     }
 
