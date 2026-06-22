@@ -138,7 +138,7 @@ label {
 }
 
 .error {
-    color: #ff4d4d;
+    color: black;
     font-size: 13px;
     font-weight: 500;
     margin-top: -6px;
@@ -371,10 +371,12 @@ label {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 
     transition: 0.2s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .meta-card h2 {
-    margin-bottom: 8px;
+    margin: 0 0 4px 0;
 }
 .meta-header {
     display: flex;
@@ -382,20 +384,19 @@ label {
     align-items: center;
 }
 
-.meta-header button {
-    margin-top: 20px;
-}
-
 .meta-content {
     height: 100%;
-
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    gap: 16px;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    padding-top: 0;
+    margin-top: 0;
 
-    text-align: center;
 }
 
 .meta-card:hover {
@@ -407,6 +408,7 @@ label {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding-top: 20px;
 }
 
 .botbar-btn button {
@@ -573,9 +575,7 @@ button:disabled {
   gap: 8px;
 }
 
-.meta-progress-fill {
-    width: 0%;
-}
+
 
 .meta-header {
     display: flex;
@@ -603,4 +603,59 @@ button:disabled {
     display: flex;
     justify-content: center;
     margin-top: 16px;
+}
+
+
+.meta-info h3 {
+    margin: 0;
+}
+
+.meta-info p {
+    margin: 4px 0 0;
+}
+
+.meta-dados{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 6px 0;
+    width: 100%;
+    margin: 6px 0;
+}
+
+.meta-info {
+    width: 100%;
+}
+
+.meta-progress {
+    width: 100%;
+    height: 8px;
+    background: #495057;      
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.meta-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    border-radius: inherit;
+    transition: width .5s ease;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.modal-actions button {
+    flex: 1;
+}
+
+.btn-delete-meta:hover {
+    color: red;
+}
+
+.meta-empty {
+   padding-top: 40px;
 }

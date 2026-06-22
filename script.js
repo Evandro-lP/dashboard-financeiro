@@ -9,6 +9,7 @@ const senhaError = document.getElementById("senha-error");
 const btn = document.getElementById("btn");
 
 form.addEventListener("submit", (e) => {
+     
     e.preventDefault();
 
     let isValid = true;

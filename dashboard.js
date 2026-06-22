@@ -115,6 +115,8 @@ const BtnMetaEditLongo = document.getElementById("btn-meta-edit-longo");
 const BtnMetaEditCurto = document.getElementById("btn-meta-edit-curto");
 const btnMetaDelete = document.getElementById("btn-meta-delete");
 
+const metaCardLongo = document.getElementById("meta-card-longo");
+const metaCardCurto = document.getElementById("meta-card-curto");
 
 // ======================
 // Funções utilitárias
@@ -414,7 +416,7 @@ function abrirModalMeta() {
     modoEdicaoMeta = false;
     metaParaEditar = null;
 
-    atualizarInterface();
+    atualizarModalMetaUI();
     metaFormError.classList.add("hidden");
 
     modalMeta.classList.remove("hidden");
@@ -500,21 +502,22 @@ function renderizarMetas() {
     const porcentagem = Math.round(
       (metaLongo.atual / metaLongo.objetivo) * 100,
     );
-
+    
     metaContentLongo.innerHTML = `
   <div class="meta-info">
 
-    <div class="meta-header">
+   
         <h3>${metaLongo.nome}</h3>
-    </div>
+    
 
-    <p>${formatarMoeda(metaLongo.atual)} / ${formatarMoeda(metaLongo.objetivo)}</p>
+    <div class="meta-dados">
+        <p>${formatarMoeda(metaLongo.atual)} / ${formatarMoeda(metaLongo.objetivo)}</p>
+        <span class="meta-percentual">${porcentagem}%</span>
+    </div>
 
     <div class="meta-progress">
         <div id="meta-longo-fill" class="meta-progress-fill"></div>
     </div>
-
-    <span class="meta-percentual">${porcentagem}%</span>
 
 </div>
 
@@ -525,11 +528,13 @@ function renderizarMetas() {
     barraLongo.style.width = `${porcentagem}%`;
     btnMetaLongo.classList.add("hidden");
     metaActionsLongo.classList.remove("hidden");
+    metaCardLongo.classList.remove("meta-empty");
+    
   } else {
     metaContentLongo.innerHTML = `
         <p>Crie sua primeira meta.</p>
     `;
-
+    metaCardLongo.classList.add("meta-empty");
     btnMetaLongo.classList.remove("hidden");
     metaActionsLongo.classList.add("hidden");
   }
@@ -543,14 +548,18 @@ function renderizarMetas() {
 
     metaContentCurto.innerHTML = `
   <div class="meta-info">
+
     <h3>${metaCurto.nome}</h3>
-    <p>${formatarMoeda(metaCurto.atual)} / ${formatarMoeda(metaCurto.objetivo)}</p>
+
+    <div class="meta-dados">
+        <p>${formatarMoeda(metaCurto.atual)} / ${formatarMoeda(metaCurto.objetivo)}</p>
+        <span class="meta-percentual">${porcentagem}%</span>
+    </div>
 
     <div class="meta-progress">
         <div id="meta-curto-fill" class="meta-progress-fill"></div>
     </div>
 
-    <span class="meta-percentual">${porcentagem}%</span>
 </div>
 
 
@@ -559,14 +568,14 @@ function renderizarMetas() {
     const barraCurto = document.getElementById("meta-curto-fill");
 
     barraCurto.style.width = `${porcentagem}%`;
-
+    metaCardCurto.classList.remove("meta-empty");
     btnMetaCurto.classList.add("hidden");
     metaActionsCurto.classList.remove("hidden");
   } else {
     metaContentCurto.innerHTML = `
         <p>Crie sua primeira meta.</p>
     `;
-
+    metaCardCurto.classList.add("meta-empty");
     btnMetaCurto.classList.remove("hidden");
     metaActionsCurto.classList.add("hidden");
   }
@@ -865,6 +874,16 @@ BtnMetaEditCurto.addEventListener("click", () => {
 
     abrirModalEdicaoMeta(meta);
 });
+
+btnMetaAddLongo.addEventListener("click", () => {
+  tipoMetaAtual = "longo";
+  abrirModalMeta();
+});
+
+btnMetaAddCurto.addEventListener("click", () => {
+  tipoMetaAtual = "curto";
+  abrirModalMeta();
+})
 
 btnMetaDelete.addEventListener("click", excluirMeta);
 // ======================
