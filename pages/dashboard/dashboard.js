@@ -407,7 +407,6 @@ function validarFormulario() {
 
 
 function abrirModalMeta() {
-  console.log(">>> abrirModalMeta"); 
   
   inputMetaNome.value = "";
     inputMetaObjetivo.value = "";

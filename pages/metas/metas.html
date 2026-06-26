@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="metas.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+    <title>Dashboard Financeiro - Metas</title>
+</head>
+
+<body class="page-metas">
+    <div class="dashboard">
+        <aside class="sidebar">
+            <h2>Dashboard Financeiro</h2>
+            <nav>
+                <a href="#">Dashboard</a>
+                <a href="#">Transações</a>
+                <a href="#">Metas</a>
+                <a href="#">Relatórios</a>
+                <a href="#">Configurações</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+
+    <header class="page-header">
+    
+        <h1>Metas</h1>
+    
+        <button id="btn-add-meta" class="btn-add-meta">
+           Nova Meta
+        </button>
+    
+    </header>
+    <div class="metas-container">
+        <div class="metas-title-card">
+            <h3>Metas longo prazo</h3>
+            <h3>Metas curto prazo</h3>
+        </div>
+
+         <div class="metas-content">
+        <div class="metas-longo" id="metas-longo">
+            <div class="metas-card">
+                <div class="meta-header">
+                    <h4>nome</h4>
+            
+                    <button class="btn-destaque" type="button">
+                        <i data-lucide="star"></i>
+                    </button>
+                </div>
+                <div class="meta-valores">
+                    <p>R$ 8.500 / R$ 50.000</p>
+                </div>
+                <div class="meta-progresso">
+                    <div class="barra-progresso">
+                        <div class="barra-preenchimento"></div>
+                    </div>
+                    <span>17%</span>
+                </div>
+                <div class="meta-footer">
+                    <span>falta</span>
+                    <div class="meta-acoes">
+                        <button class="btn-editar-meta" type="button">
+                            <i data-lucide="pencil"></i>
+                        </button>
+                        
+                        <button class="btn-excluir-meta" type="button">
+                            <i data-lucide="trash-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="metas-curto" id="metas-curto">
+           <div class="metas-card">
+                <div class="meta-header">
+                    <h4>nome</h4>
+            
+                    <button class="btn-destaque" type="button">
+                        <i data-lucide="star"></i>
+                    </button>
+                </div>
+                <div class="meta-valores">
+                    <p>R$ 8.500 / R$ 50.000</p>
+                </div>
+                <div class="meta-progresso">
+                    <div class="barra-progresso">
+                        <div class="barra-preenchimento"></div>
+                    </div>
+                    <span>17%</span>
+                </div>
+                <div class="meta-footer">
+                    <span>falta</span>
+                    <div class="meta-acoes">
+                        <button class="btn-editar-meta" type="button">
+                            <i data-lucide="pencil"></i>
+                        </button>
+                        
+                        <button class="btn-excluir-meta" type="button">
+                            <i data-lucide="trash-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    </div>
+
+
+    
+    </main>
+
+    <div class="modal hidden" id="modal-meta">
+        <div class="modal-content">
+            <h2 id="meta-modal-title">Nova Meta</h2>
+
+            <div id="meta-form-error" class="form-error hidden"></div>
+
+            <input type="text" id="input-meta-nome" placeholder="Nome da meta">
+
+            <input type="number" id="input-meta-objetivo" placeholder="Valor da meta">
+
+            <input type="number" id="input-meta-atual" placeholder="Valor já economizado">
+            <p>Tipo de meta</p>
+            <div class="tipo-meta">
+                <label>
+                    <input type="radio" name="tipo-meta" value="longo">
+                    Longo prazo
+                </label>
+            
+                <label>
+                    <input type="radio" name="tipo-meta" value="curto">
+                    Curto prazo
+                </label>
+            </div>
+
+            <div class="modal-actions">
+                <button id="btn-meta-fechar">Cancelar</button>
+                <button id="btn-meta-salvar">Salvar</button>
+            </div>
+            <button id="btn-meta-delete" class="btn-delete-meta hidden">
+                    Excluir Meta
+                </button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="metas.js"></script>
+</body>
+
+</html>
+
+
+
