@@ -25,13 +25,29 @@ const inputMetaAtual = document.getElementById("input-meta-atual");
 const btnNovaMeta = document.getElementById("btn-add-meta");
 const btnMetaSalvar = document.getElementById("btn-meta-salvar");
 const btnMetaFechar = document.getElementById("btn-meta-fechar");
-const btnDeleteMeta = document.getElementById("btn-delete-meta");
 // radio
 const radiosTipoMeta = document.querySelectorAll('input[name="tipo-meta"]');
 
 // ======================
 //   Funções
 // ======================
+
+function salvarMetasStorage() {
+    localStorage.setItem("metas", JSON.stringify(metas));
+}
+
+function carregarMetasStorage() {
+
+    const metasSalvas = localStorage.getItem("metas");
+
+    try {
+        metas = JSON.parse(metasSalvas) || [];
+    } catch {
+        metas = [];
+    }
+
+    renderizarMetas();
+}
 
 function renderizarMetas() {
 
@@ -54,8 +70,8 @@ function renderizarMetas() {
 
         <div class="meta-header">
             <h4>${meta.nome}</h4>
-            <button class="btn-destaque" type="button">
-                <i data-lucide="star"></i>
+            <button class="btn-destaque" type="button" onclick="definirMetaPrincipal(${meta.id})">
+                <i data-lucide="star" class="star ${meta.destaque ? "destaque-on" : ""}"></i>
             </button>
         </div>
 
@@ -72,14 +88,16 @@ function renderizarMetas() {
         </div>
 
         <div class="meta-footer">
-            <span>Falta: ${formatarMoeda(falta)}</span>
+            <span class="meta-falta">
+            Falta: <strong>${formatarMoeda(falta)}</strong>
+            </span>
             <div class="meta-acoes">
             
-            <button class="btn-editar-meta" type="button">
+            <button class="btn-editar-meta" type="button" onclick="editarMeta(${meta.id})">
                 <i data-lucide="pencil"></i>
             </button>
 
-            <button class="btn-excluir-meta" type="button">
+            <button class="btn-excluir-meta" type="button" onclick="excluirMeta(${meta.id})">
                 <i data-lucide="trash-2"></i>
             </button>
         
@@ -104,8 +122,8 @@ function renderizarMetas() {
 
         <div class="meta-header">
             <h4>${meta.nome}</h4>
-            <button class="btn-destaque" type="button">
-                <i data-lucide="star"></i>
+            <button class="btn-destaque" type="button" onclick="definirMetaPrincipal(${meta.id})">
+                <i data-lucide="star" class="star ${meta.destaque ? "destaque-on" : ""}"></i>
             </button>
         </div>
 
@@ -122,14 +140,16 @@ function renderizarMetas() {
         </div>
 
         <div class="meta-footer">
-            <span>Falta: ${formatarMoeda(falta)}</span>
+            <span class="meta-falta">
+            Falta: <strong>${formatarMoeda(falta)}</strong>
+            </span>
             <div class="meta-acoes">
             
-            <button class="btn-editar-meta" type="button">
+            <button class="btn-editar-meta" type="button" onclick="editarMeta(${meta.id})">
                 <i data-lucide="pencil"></i>
             </button>
 
-            <button class="btn-excluir-meta" type="button">
+            <button class="btn-excluir-meta" type="button" onclick="excluirMeta(${meta.id})">
                 <i data-lucide="trash-2"></i>
             </button>
         
@@ -157,7 +177,7 @@ function abrirModalMeta() {
 
     metaEditando = null;
 
-    // atualizarModalMetaUI();
+    atualizarModalMetaUI();
 
     metaFormError.classList.add("hidden");
 
@@ -246,15 +266,17 @@ function salvarMeta() {
             objetivo,
             atual,
             tipo,
+            destaque: metas.length === 0,
             createdAt: new Date().toISOString(),
         };
 
         metas.push(novaMeta);
     }
 
+    salvarMetasStorage();
     renderizarMetas();
-
     fecharModalMeta();
+    
 }
 
 function mostrarErroMeta(mensagem) {
@@ -265,6 +287,99 @@ function mostrarErroMeta(mensagem) {
 function esconderErroMeta() {
   metaFormError.textContent = "";
   metaFormError.classList.add("hidden");
+}
+
+function atualizarModalMetaUI() {
+
+    if (metaEditando) {
+
+        metaModalTitle.textContent = "Editar Meta";
+        btnMetaSalvar.textContent = "Salvar alterações";
+
+
+    } else {
+
+        metaModalTitle.textContent = "Nova Meta";
+        btnMetaSalvar.textContent = "Adicionar";
+
+
+    }
+
+}
+
+function editarMeta(id) {
+    console.log(id);
+    const meta = metas.find((meta) => meta.id === id);
+    metaEditando = meta;
+
+    inputMetaNome.value = meta.nome;
+    inputMetaObjetivo.value = meta.objetivo;
+    inputMetaAtual.value = meta.atual;
+
+    radiosTipoMeta.forEach((radio) => {
+        radio.checked = radio.value === meta.tipo;
+    });
+
+    esconderErroMeta();
+
+    atualizarModalMetaUI();
+
+    modalMeta.classList.remove("hidden");
+
+    inputMetaNome.focus();
+
+}
+
+function excluirMeta(id) {
+
+    const metaExcluida = metas.find((meta) => meta.id === id);
+
+    const eraDestaque = metaExcluida.destaque;
+    const tipo = metaExcluida.tipo;
+
+    metas = metas.filter((meta) => meta.id !== id);
+
+    if (eraDestaque) {
+
+        const metaMaisAntiga = metas.find((meta) => meta.tipo === tipo);
+
+        if (metaMaisAntiga) {
+            metaMaisAntiga.destaque = true;
+        }
+
+    }
+
+    salvarMetasStorage();
+
+    renderizarMetas();
+
+    fecharModalMeta();
+
+}
+
+function definirMetaPrincipal(id) {
+
+    const metaSelecionada = metas.find(meta => meta.id === id);
+    const tipo = metaSelecionada.tipo;
+
+    metas.forEach((meta) => {
+
+        if (meta.tipo === tipo) {
+
+            if (meta.id === id) {
+                meta.destaque = true;
+            } else {
+                meta.destaque = false;
+            }
+
+        }
+
+    });
+
+    salvarMetasStorage();
+
+    renderizarMetas();
+
 }
 
 
@@ -288,4 +403,4 @@ btnMetaFechar.addEventListener("click", fecharModalMeta);
 
 btnMetaSalvar.addEventListener("click", salvarMeta);
 
-lucide.createIcons();
+carregarMetasStorage();

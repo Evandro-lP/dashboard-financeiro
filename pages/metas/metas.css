@@ -150,7 +150,7 @@ button:hover {
     gap: 15px;
 }
 
-.metas-card {
+.meta-card {
     display: flex;
     flex-direction: column;
     border: 1px solid #495057;
@@ -256,3 +256,62 @@ input:focus {
 .modal-actions button {
     flex: 1;
 }
+
+.star {
+    color: #111827;
+    transition: color 0.2s ease;
+}
+
+.destaque-on {
+    color: #111827;
+    fill: #eab308;
+}
+
+.btn-editar-meta,
+.btn-excluir-meta,
+.btn-destaque {
+    background: transparent;
+    padding: 6px;
+    color: #111827;
+}
+
+.btn-editar-meta:hover,
+.btn-excluir-meta:hover,
+.btn-destaque:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.meta-header h4 {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.barra-progresso {
+    width: 100%;
+    height: 10px;
+    background: #495057;
+    border-radius: 999px;
+    overflow: hidden;
+    flex: 1;
+}
+
+.barra-preenchimento {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    border-radius: inherit;
+    transition: width .5s ease;
+}
+
+.meta-progresso {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.meta-valores {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #111827;
+}
+
