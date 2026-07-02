@@ -4,6 +4,7 @@
 
 let metas = [];
 let metaEditando = null;
+let filtroTipo = "todos";
 
 // ======================
 // Seletores do DOM
@@ -27,6 +28,7 @@ const btnMetaSalvar = document.getElementById("btn-meta-salvar");
 const btnMetaFechar = document.getElementById("btn-meta-fechar");
 // radio
 const radiosTipoMeta = document.querySelectorAll('input[name="tipo-meta"]');
+const botoesFiltro = document.querySelectorAll(".btn-filtro");
 
 // ======================
 //   Funções
@@ -49,120 +51,94 @@ function carregarMetasStorage() {
     renderizarMetas();
 }
 
+function criarCardMeta(meta) {
+
+    const porcentagem = Math.round((meta.atual / meta.objetivo) * 100);
+    const falta = meta.objetivo - meta.atual;
+
+    return `
+        <div class="meta-card">
+
+        <div class="meta-header">
+            <h4>${meta.nome}</h4>
+            <button class="btn-destaque" type="button" onclick="definirMetaPrincipal(${meta.id})">
+                <i data-lucide="star" class="star ${meta.destaque ? "destaque-on" : ""}"></i>
+            </button>
+        </div>
+
+        <div class="meta-valores">
+            <p>${formatarMoeda(meta.atual)} / ${formatarMoeda(meta.objetivo)}</p>
+        </div>
+
+        <div class="meta-progresso">
+            <div class="barra-progresso">
+                <div class="barra-preenchimento" style="width: ${porcentagem}%"></div>
+            </div>
+
+            <span>${porcentagem}%</span>
+        </div>
+
+        <div class="meta-footer">
+            <span class="meta-falta">
+            Falta: <strong>${formatarMoeda(falta)}</strong>
+            </span>
+            <div class="meta-acoes">
+            
+            <button class="btn-editar-meta" type="button" onclick="editarMeta(${meta.id})">
+                <i data-lucide="pencil"></i>
+            </button>
+
+            <button class="btn-excluir-meta" type="button" onclick="excluirMeta(${meta.id})">
+                <i data-lucide="trash-2"></i>
+            </button>
+        
+            </div>
+
+        </div>
+
+        </div>
+    `;
+}
+
+function aplicarFiltroTipo() {
+
+    if (filtroTipo === "todos") {
+        return metas;
+    }
+
+    if (filtroTipo === "longo") {
+        return metas.filter((meta) => meta.tipo === "longo");
+    }
+
+    if (filtroTipo === "curto") {
+        return metas.filter((meta) => meta.tipo === "curto");
+    }
+
+    return metas;
+}
+
 function renderizarMetas() {
 
     // Limpa os containers
     containerMetasLongo.innerHTML = "";
     containerMetasCurto.innerHTML = "";
 
-    const metasLongo = metas.filter((meta) => meta.tipo === "longo");
+    const metasFiltradas = aplicarFiltroTipo();
 
-    const metasCurto = metas.filter((meta) => meta.tipo === "curto");
+    const metasLongo = metasFiltradas.filter((meta) => meta.tipo === "longo");
+    const metasCurto = metasFiltradas.filter((meta) => meta.tipo === "curto");
 
     // Renderiza metas de longo prazo
     metasLongo.forEach((meta) => {
-
-    
-      const porcentagem = Math.round((meta.atual / meta.objetivo) * 100);
-      const falta = meta.objetivo - meta.atual;
-      containerMetasLongo.innerHTML += `
-        <div class="meta-card">
-
-        <div class="meta-header">
-            <h4>${meta.nome}</h4>
-            <button class="btn-destaque" type="button" onclick="definirMetaPrincipal(${meta.id})">
-                <i data-lucide="star" class="star ${meta.destaque ? "destaque-on" : ""}"></i>
-            </button>
-        </div>
-
-        <div class="meta-valores">
-            <p>${formatarMoeda(meta.atual)} / ${formatarMoeda(meta.objetivo)}</p>
-        </div>
-
-        <div class="meta-progresso">
-            <div class="barra-progresso">
-                <div class="barra-preenchimento" style="width: ${porcentagem}%"></div>
-            </div>
-
-            <span>${porcentagem}%</span>
-        </div>
-
-        <div class="meta-footer">
-            <span class="meta-falta">
-            Falta: <strong>${formatarMoeda(falta)}</strong>
-            </span>
-            <div class="meta-acoes">
-            
-            <button class="btn-editar-meta" type="button" onclick="editarMeta(${meta.id})">
-                <i data-lucide="pencil"></i>
-            </button>
-
-            <button class="btn-excluir-meta" type="button" onclick="excluirMeta(${meta.id})">
-                <i data-lucide="trash-2"></i>
-            </button>
-        
-            </div>
-
-        </div>
-
-        </div>
-    `;
-       
-
+        containerMetasLongo.innerHTML += criarCardMeta(meta);
     });
 
     // Renderiza metas de curto prazo
     metasCurto.forEach((meta) => {
-
-    
-      const porcentagem = Math.round((meta.atual / meta.objetivo) * 100);
-      const falta = meta.objetivo - meta.atual;
-      containerMetasCurto.innerHTML += `
-        <div class="meta-card">
-
-        <div class="meta-header">
-            <h4>${meta.nome}</h4>
-            <button class="btn-destaque" type="button" onclick="definirMetaPrincipal(${meta.id})">
-                <i data-lucide="star" class="star ${meta.destaque ? "destaque-on" : ""}"></i>
-            </button>
-        </div>
-
-        <div class="meta-valores">
-            <p>${formatarMoeda(meta.atual)} / ${formatarMoeda(meta.objetivo)}</p>
-        </div>
-
-        <div class="meta-progresso">
-            <div class="barra-progresso">
-                <div class="barra-preenchimento" style="width: ${porcentagem}%"></div>
-            </div>
-
-            <span>${porcentagem}%</span>
-        </div>
-
-        <div class="meta-footer">
-            <span class="meta-falta">
-            Falta: <strong>${formatarMoeda(falta)}</strong>
-            </span>
-            <div class="meta-acoes">
-            
-            <button class="btn-editar-meta" type="button" onclick="editarMeta(${meta.id})">
-                <i data-lucide="pencil"></i>
-            </button>
-
-            <button class="btn-excluir-meta" type="button" onclick="excluirMeta(${meta.id})">
-                <i data-lucide="trash-2"></i>
-            </button>
-        
-            </div>
-
-        </div>
-
-        </div>
-    `;
-
+        containerMetasCurto.innerHTML += criarCardMeta(meta);
     });
 
-     lucide.createIcons();
+    lucide.createIcons();
 }
 
 function abrirModalMeta() {
@@ -402,5 +378,36 @@ btnNovaMeta.addEventListener("click", abrirModalMeta);
 btnMetaFechar.addEventListener("click", fecharModalMeta);
 
 btnMetaSalvar.addEventListener("click", salvarMeta);
+
+botoesFiltro.forEach((botao) => {
+
+    botao.addEventListener("click", () => {
+
+        
+        filtroTipo = botao.dataset.tipo;
+        console.log(filtroTipo);
+        renderizarMetas();
+
+    });
+
+});
+
+botoesFiltro.forEach((botao) => {
+
+    botao.addEventListener("click", () => {
+
+        botoesFiltro.forEach((botaoAtual) => {
+            botaoAtual.classList.remove("ativo");
+        });
+
+        botao.classList.add("ativo");
+
+        filtroTipo = botao.dataset.tipo;
+
+        renderizarMetas();
+
+    });
+
+});
 
 carregarMetasStorage();

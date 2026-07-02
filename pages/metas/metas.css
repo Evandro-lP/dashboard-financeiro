@@ -113,7 +113,7 @@ button:hover {
     margin-bottom: 20px;
 }
 
-.metas-conteiner {
+.metas-container {
      background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -125,7 +125,7 @@ button:hover {
     width: 100%;
     height: 85%;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    
+    margin-top: 12px;
     transition: 0.2s ease;
 }
 
@@ -315,3 +315,12 @@ input:focus {
     color: #111827;
 }
 
+.btn-filtro.ativo {
+    background: #124559;
+    color: white;
+}
+
+.btn-filtro:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(18, 69, 89, 0.3);
+}
