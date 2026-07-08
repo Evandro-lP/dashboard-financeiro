@@ -29,7 +29,10 @@ const btnMetaFechar = document.getElementById("btn-meta-fechar");
 // radio
 const radiosTipoMeta = document.querySelectorAll('input[name="tipo-meta"]');
 const botoesFiltro = document.querySelectorAll(".btn-filtro");
+const metasContent = document.querySelector(".metas-content");
 
+const tituloLongo = document.getElementById("titulo-longo");
+const tituloCurto = document.getElementById("titulo-curto");
 // ======================
 //   Funções
 // ======================
@@ -117,8 +120,50 @@ function aplicarFiltroTipo() {
     return metas;
 }
 
-function renderizarMetas() {
+function atualizarLayoutFiltro() {
 
+    switch (filtroTipo) {
+
+        case "todos":
+            metasContent.style.gridTemplateColumns = "1fr 1fr";
+            metasContent.style.justifyContent = "";
+
+            tituloLongo.classList.remove("hidden");
+            tituloCurto.classList.remove("hidden");
+
+            containerMetasCurto.classList.remove("hidden");
+            containerMetasLongo.classList.remove("hidden");
+            break;
+
+        case "longo":
+            metasContent.style.gridTemplateColumns = "700px";
+            metasContent.style.justifyContent = "center";
+
+            tituloLongo.classList.remove("hidden");
+            tituloCurto.classList.add("hidden");
+
+            containerMetasCurto.classList.add("hidden");
+            containerMetasLongo.classList.remove("hidden");
+            break;
+
+        case "curto":
+            metasContent.style.gridTemplateColumns = "700px";
+            metasContent.style.justifyContent = "center";
+
+            tituloLongo.classList.add("hidden");
+            tituloCurto.classList.remove("hidden");
+
+            containerMetasLongo.classList.add("hidden");
+            containerMetasCurto.classList.remove("hidden");
+            break;
+
+    }
+
+}
+
+function renderizarMetas() {
+     
+    atualizarLayoutFiltro();
     // Limpa os containers
     containerMetasLongo.innerHTML = "";
     containerMetasCurto.innerHTML = "";
