@@ -199,7 +199,6 @@ function carregarDoStorage() {
   } catch {
     metas = [];
   }
-
   // Garante que transações antigas tenham uma data de criação
   transacoes = transacoes.map(t => ({
     ...t,
@@ -491,12 +490,25 @@ function salvarMeta() {
   fecharModalMeta();
 }
 
+function obterMetaDestaque(tipo) {
+    const metasDoTipo = metas.filter(meta => meta.tipo === tipo);
+
+    if (metasDoTipo.length === 0) {
+        return null;
+    }
+
+    const metaDestaque = metasDoTipo.find(meta => meta.destaque);
+
+    return metaDestaque || metasDoTipo[0];
+}
+
+
 function renderizarMetas() {
   const metasLongo = metas.filter((meta) => meta.tipo === "longo");
   const metasCurto = metas.filter((meta) => meta.tipo === "curto");
 
   if (metasLongo.length > 0) {
-    const metaLongo = metasLongo[0];
+    const metaLongo = obterMetaDestaque("longo");
 
     const porcentagem = Math.round(
       (metaLongo.atual / metaLongo.objetivo) * 100,
@@ -539,7 +551,7 @@ function renderizarMetas() {
   }
 
   if (metasCurto.length > 0) {
-    const metaCurto = metasCurto[0];
+    const metaCurto = obterMetaDestaque("curto");
 
     const porcentagem = Math.round(
       (metaCurto.atual / metaCurto.objetivo) * 100,
@@ -890,3 +902,4 @@ btnMetaDelete.addEventListener("click", excluirMeta);
 // ======================
 
 carregarDoStorage();
+
