@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="transacao.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+    <title>Dashboard Financeiro - Transações</title>
+</head>
+
+<body class="page-metas">
+    <div class="dashboard">
+        <aside class="sidebar">
+            <h2>Dashboard Financeiro</h2>
+            <nav>
+                <a href="../dashboard/dashboard.html">Dashboard</a>
+                <a href="./metas.html">Transações</a>
+                <a href="#">Metas</a>
+                <a href="#">Relatórios</a>
+                <a href="#">Configurações</a>
+            </nav>
+        </aside>
+
+        <main class="transacoes-container">
+
+            <section class="transacoes-header">
+                <h1>Transações</h1>
+                <p>Gerencie todas as suas receitas e despesas.</p>
+            </section>
+
+            <section class="transacoes-toolbar">
+
+                <div class="pesquisa">
+                    <input type="text" placeholder="🔍 Pesquisar transação...">
+                </div>
+
+                <div class="acoes-toolbar">
+
+                    <div class="filtros">
+                        <button class="filtro-ativo">Todas</button>
+                        <button>Receitas</button>
+                        <button>Despesas</button>
+                    </div>
+
+                    <button class="btn-nova-transacao">
+                        + Nova Transação
+                    </button>
+
+                </div>
+
+            </section>
+
+            <section class="lista-transacoes">
+
+                <!-- As transações serão renderizadas aqui -->
+
+            </section>
+
+        </main>
+</body>
+
+</html>

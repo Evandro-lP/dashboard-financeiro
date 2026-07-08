@@ -1,0 +1,210 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter" , sans-serif;
+}
+
+body {
+    overflow: hidden;
+}
+
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    background-color: #ced4da;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 240px;
+    background-color: #111827;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar a {
+    color: #cbd5e1;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.sidebar a:hover {
+    background: #ced4da;
+    color: #111827;
+}
+
+h1 {
+    margin-bottom: 16px;
+    font-family: "Lora" , sans-serif;
+}
+
+button {
+    padding: 12px;
+    border-radius: 8px;
+    border: 0;
+    background-color: #343a40;
+    color: #dee2e6;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+button:hover {
+    background-color: #495057;
+}
+
+/* =========================
+   CONTEÚDO PRINCIPAL
+========================= */
+
+.transacoes-container {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.transacoes-header {
+    margin-bottom: 30px;
+}
+
+.transacoes-header h1 {
+    font-size: 32px;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.transacoes-header p {
+    color: #111827;
+    font-size: 15px;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.transacoes-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+/* Pesquisa */
+.pesquisa {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 15px;
+
+    padding: 0 20px;
+    width: 60%;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    transition: .2s ease;
+}
+
+.pesquisa input {
+    width: 100%;
+    padding: 16px 0;
+
+    background: transparent;
+    border: none;
+    outline: none;
+
+    color: #111827;
+    font-size: 15px;
+}
+
+.pesquisa input:focus {
+    box-shadow: 0 0 0 2px #111827;
+}
+
+/* Linha dos filtros */
+
+.acoes-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Filtros */
+
+.filtros {
+    display: flex;
+    gap: 12px;
+}
+
+.filtros button {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    color: #111827;
+
+    transition: .2s ease;
+}
+
+.filtros button:hover {
+    background: #111827;
+    color: white;
+}
+
+.filtro-ativo {
+    background: #111827 !important;
+    color: white !important;
+}
+
+/* Botão */
+
+.btn-nova-transacao {
+    padding: 12px 22px;
+    background: #111827;
+    color: white;
+    font-weight: 600;
+}
+
+.btn-nova-transacao:hover {
+    background: #374151;
+}
+
+/* =========================
+   LISTA
+========================= */
+
+.lista-transacoes {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 15px;
+
+    padding: 24px;
+    width: 100%;
+    min-height: 600px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    margin-top: 12px;
+    transition: 0.2s ease;
+}
