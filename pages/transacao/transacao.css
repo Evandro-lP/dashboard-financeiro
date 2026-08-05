@@ -208,3 +208,84 @@ button:hover {
     margin-top: 12px;
     transition: 0.2s ease;
 }
+
+.mensagem-vazia {
+    text-align: center;
+    font-size: 16px;
+    padding: 40px;
+}
+
+.card-dia {
+    padding: 18px 0;
+    margin-bottom: 15px;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.card-dia h3 {
+    margin-bottom: 15px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+.transacao-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.transacao-item:last-child {
+    border-bottom: none;
+}
+
+.icone-transacao {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.icone-transacao svg {
+    width: 22px;
+    height: 22px;
+}
+
+.transacao-info {
+    flex: 1;
+}
+
+.transacao-info strong {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.transacao-info span {
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.income {
+    color: #006400;
+    font-weight: bold;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.expense {
+    color: #d00000;
+    font-weight: bold;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
