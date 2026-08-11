@@ -60,6 +60,55 @@
                 <!-- As transações serão renderizadas aqui -->
 
             </section>
+            <div class="modal hidden" id="modal">
+        <div class="modal-content">
+
+            <h2 id="modal-title">Adicionar</h2>
+
+            <div class="tipo-transacao">
+                <button type="button" id="btn-modal-receita">
+                    Receita
+                </button>
+            
+                <button type="button" id="btn-modal-despesa">
+                    Despesa
+                </button>
+            </div>
+            <div id="form-error" class="form-error hidden"></div>
+
+            <input type="text" id="input-nome" placeholder="Descrição">
+
+            <input type="number" id="input-valor" placeholder="Valor">
+
+            <select id="input-categoria">
+                <option value="">Selecione uma categoria</option>
+                <option value="delivery">Delivery</option>
+                <option value="transporte">Transporte</option>
+                <option value="salario">Salário</option>
+                <option value="mercado">Mercado</option>
+                <option value="outros">Outros</option>
+            </select>
+
+            <div class="modal-actions">
+                <button id="btn-salvar">Salvar</button>
+                <button id="btn-fechar">Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+    <!-- modal de confirmação de excluir transação -->
+    <div class="modal hidden" id="delete-modal">
+        <div class="modal-content">
+
+            <h2>Excluir transação</h2>
+            <p>Tem certeza que deseja excluir esta transação?</p>
+            <div class="modal-actions">
+                <button id="btn-cancelar-delete">Cancelar</button>
+                <button id="btn-confirmar-delete">Excluir</button>
+            </div>
+
+        </div>
+    </div>
 
         </main>
         <script src="https://unpkg.com/lucide@latest"></script>

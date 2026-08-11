@@ -136,7 +136,8 @@ button:hover {
 }
 
 .pesquisa input:focus {
-    box-shadow: 0 0 0 2px #111827;
+    outline: none;
+    box-shadow: none;
 }
 
 /* Linha dos filtros */
@@ -288,4 +289,126 @@ button:hover {
     font-weight: 700;
 }
 
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: all 0.25s ease;
+}
+
+.modal:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: #1f2937;
+    padding: 24px;
+    border-radius: 12px;
+    width: 380px;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+#modal-title {
+    color: white;
+}
+
+.modal.closing {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+}
+
+
+/* =========================
+   INPUT CATEGORIA
+========================= */
+
+#input-categoria {
+    padding: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.tipo-transacao {
+    display: flex;
+    gap: 8px;
+}
+
+.tipo-transacao button {
+    flex: 1;
+}
+
+/* =========================
+   ERRO DO FORMULÁRIO
+========================= */
+
+.form-error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+
+    padding: 8px 10px;
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+
+/* =========================
+   AÇÕES DO MODAL
+========================= */
+
+.modal-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.modal-actions button {
+    flex: 1;
+}
+
+
+/* =========================
+   HIDDEN
+========================= */
+
+.hidden {
+    display: none;
+}
+
+
+/* =========================
+   BOTÃO DESABILITADO
+========================= */
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.filtro-ativo {
+    background: #111827 !important;
+    color: white !important;
+}
