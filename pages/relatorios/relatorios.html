@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="relatorios.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+    <title>Dashboard Financeiro - Relatórios</title>
+</head>
+
+<body class="page-dashboard">
+    <div class="dashboard">
+        <aside class="sidebar">
+            <h2>Dashboard Financeiro</h2>
+            <nav>
+                <a href="../dashboard/dashboard.html">Dashboard</a>
+                <a href="../transacao/transacao.html">Transações</a>
+                <a href="../metas/metas.html">Metas</a>
+                <a href="./relatorios.html">Relatórios</a>
+                <a href="#">Configurações</a>
+            </nav>
+        </aside>
+        <main class="relatorios-container">
+
+            <section class="relatorios-header">
+                <h1>Relatórios</h1>
+                <p>Analise sua vida financeira.</p>
+            </section>
+
+            <section class="relatorios-filtros">
+
+                <div class="filtro-periodo">
+                    <label for="periodo">Período</label>
+
+                    <select id="periodo">
+                        <option value="mes-atual">Este mês</option>
+                        <option value="mes-anterior">Mês passado</option>
+                        <option value="tres-meses">Últimos 3 meses</option>
+                        <option value="ano">Este ano</option>
+                    </select>
+                </div>
+
+                <div class="filtro-tipo">
+                    <label for="tipo">Tipo</label>
+
+                    <select id="tipo">
+                        <option value="todos">Todas</option>
+                        <option value="receitas">Receitas</option>
+                        <option value="despesas">Despesas</option>
+                    </select>
+                </div>
+
+            </section>
+            <section class="resumo-relatorios">
+
+                <div class="card-resumo">
+                    <span>Receitas</span>
+                    <strong id="total-receitas">R$ 0,00</strong>
+                </div>
+
+                <div class="card-resumo">
+                    <span>Despesas</span>
+                    <strong id="total-despesas">R$ 0,00</strong>
+                </div>
+
+                <div class="card-resumo">
+                    <span>Saldo</span>
+                    <strong id="saldo">R$ 0,00</strong>
+                </div>
+
+                <div class="card-resumo">
+                    <span>Maior gasto</span>
+                    <strong id="maior-gasto">R$ 0,00</strong>
+                </div>
+
+            </section>
+            <section class="graficos-relatorios">
+
+                <div class="grafico-relatorio">
+                    <h2>Receitas x Despesas</h2>
+
+                    <div class="grafico-box">
+                        <canvas id="grafico-receitas-despesas"></canvas>
+                    </div>
+                </div>
+
+                <div class="grafico-relatorio">
+                    <h2>Evolução financeira</h2>
+
+                    <div class="grafico-box">
+                        <canvas id="grafico-evolucao"></canvas>
+                    </div>
+                </div>
+
+            </section>
+            <section class="insights-relatorios">
+
+    <h2>Insights financeiros</h2>
+    <p class="insights-descricao">
+        Uma análise automática dos seus dados financeiros.
+    </p>
+
+    <div class="lista-insights">
+
+        <p id="insight-1">Analisando suas receitas...</p>
+
+        <p id="insight-2">Analisando suas despesas...</p>
+
+        <p id="insight-3">Analisando seu saldo...</p>
+
+        <p id="insight-4">Analisando seus maiores gastos...</p>
+
+        <p id="insight-5">Gerando uma recomendação...</p>
+
+    </div>
+
+</section>
+            <script src="https://unpkg.com/lucide@latest"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+            <script src="relatorios.js"></script>
+
+        </main>
