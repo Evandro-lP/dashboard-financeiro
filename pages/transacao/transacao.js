@@ -4,6 +4,7 @@
 
 const listaTransacoes = document.querySelector(".lista-transacoes");
 const inputPesquisa = document.querySelector(".pesquisa input");
+const paginacao = document.getElementById("paginacao");
 
 const btnTodas = document.getElementById("btnTodas");
 const btnReceitas = document.getElementById("btnReceitas");
@@ -38,7 +39,7 @@ const iconesCategoria = {
   transporte: "car",
   salario: "briefcase-business",
   mercado: "shopping-cart",
-  outros: "package"
+  outros: "package",
 };
 
 // Cores utilizadas no gráfico por categoria
@@ -47,7 +48,7 @@ const coresCategoria = {
   transporte: "#3b82f6",
   salario: "#006400",
   delivery: "#f97316",
-  outros: "#6b7280"
+  outros: "#6b7280",
 };
 
 // =========================
@@ -67,273 +68,445 @@ let tipoAtual = "";
 let transacaoParaEditar = null;
 let transacaoParaExcluir = null;
 
+let paginaAtual = 1;
+let transacoesPorPagina = 10;
+
 // =========================
 // FUNÇÕES
 // =========================
 
 function carregarTransacoes() {
-    const transacoesSalvas = localStorage.getItem("transacoes");
+  const transacoesSalvas = localStorage.getItem("transacoes");
 
-    try {
-        transacoes = JSON.parse(transacoesSalvas) || [];
-    } catch {
-        transacoes = [];
-    }
+  try {
+    transacoes = JSON.parse(transacoesSalvas) || [];
+  } catch {
+    transacoes = [];
+  }
 
-    transacoes = transacoes.map(t => ({
-        ...t,
-        createdAt: t.createdAt || new Date().toISOString()
-    }));
+  transacoes = transacoes.map((t) => ({
+    ...t,
+    createdAt: t.createdAt || new Date().toISOString(),
+  }));
 }
 
 function renderizarTransacoes() {
+  listaTransacoes.innerHTML = "";
 
-    listaTransacoes.innerHTML = "";
-
-    if (transacoes.length === 0) {
-        listaTransacoes.innerHTML = `
+  if (transacoes.length === 0) {
+    listaTransacoes.innerHTML = `
             <p class="mensagem-vazia">
                 Nenhuma transação cadastrada.
             </p>
         `;
 
-        return;
-    }
+    return;
+  }
 
-    const transacoesFiltradas = obterTransacoesFiltradas();
+  const transacoesFiltradas = obterTransacoesFiltradas();
 
-    const grupos = agruparTransacoesPorData(transacoesFiltradas);
+  const totalPaginas = Math.ceil(
+    transacoesFiltradas.length / transacoesPorPagina,
+  );
 
-    Object.keys(grupos).forEach(data => {
+  if (paginaAtual > totalPaginas) {
+    paginaAtual = totalPaginas;
+  }
 
-        const transacoesDoDia = grupos[data];
+  const transacoesDaPagina = obterTransacoesDaPagina(transacoesFiltradas);
 
-        // criar card do dia
-        const cardDia = document.createElement("div");
-        cardDia.classList.add("card-dia");
+  const grupos = agruparTransacoesPorData(transacoesDaPagina);
 
-        cardDia.innerHTML = `
+  Object.keys(grupos).forEach((data) => {
+    const transacoesDoDia = grupos[data];
+
+    // criar card do dia
+    const cardDia = document.createElement("div");
+    cardDia.classList.add("card-dia");
+
+    cardDia.innerHTML = `
             <h3>${data}</h3>
         `;
 
+    // adicionar transações dentro do dia
+    transacoesDoDia.forEach((transacao) => {
+      console.log(transacao.tipo);
 
-        // adicionar transações dentro do dia
-        transacoesDoDia.forEach(transacao => {
+      const item = document.createElement("div");
+      item.classList.add("transacao-item");
 
-            console.log(transacao.tipo);
+      item.innerHTML = `
+    <div class="icone-transacao">
+        <i data-lucide="${iconesCategoria[transacao.categoria]}"></i>
+    </div>
 
-            const item = document.createElement("div");
-            item.classList.add("transacao-item");
+    <div class="transacao-info">
+        <strong>${transacao.nome}</strong>
+    </div>
 
-            item.innerHTML = `
-                <div class="icone-transacao">
-                    <i data-lucide="${iconesCategoria[transacao.categoria]}"></i>
-                </div>
+    <div class="transacao-acoes">
 
-                <div class="transacao-info">
-                    <strong>${transacao.nome}</strong>
-                </div>
+        <button class="btn-editar" title="Editar">
+            <i data-lucide="pencil"></i>
+        </button>
 
-                <span class="${transacao.tipo}">
-                    R$ ${transacao.valor.toFixed(2)}
-                </span>
-            `;
+        <button class="btn-excluir" title="Excluir">
+            <i data-lucide="trash-2"></i>
+        </button>
 
-            cardDia.appendChild(item);
+    </div>
 
-        });
+    <span class="${transacao.tipo}">
+        R$ ${transacao.valor.toFixed(2)}
+    </span>
+`;
 
+      const btnExcluir = item.querySelector(".btn-excluir");
 
-        // adiciona o card completo na tela
-        listaTransacoes.appendChild(cardDia);
+      btnExcluir.addEventListener("click", () => {
+        transacaoParaExcluir = transacao;
+        deleteModal.classList.remove("hidden");
+      });
 
+      const btnEditar = item.querySelector(".btn-editar");
+
+      btnEditar.addEventListener("click", () => {
+        abrirModalEdicao(transacao);
+      });
+
+      cardDia.appendChild(item);
     });
 
-    // renderiza os ícones criados pelo JS
-    lucide.createIcons();
+    // adiciona o card completo na tela
+    listaTransacoes.appendChild(cardDia);
+  });
 
+  // renderiza os ícones criados pelo JS
+  lucide.createIcons();
+
+  renderizarPaginacao(transacoesFiltradas);
+}
+
+function fecharDeleteModal() {
+  deleteModal.classList.add("hidden");
+  transacaoParaExcluir = null;
+}
+
+function abrirModalEdicao(transacao) {
+  transacaoParaEditar = transacao;
+
+  inputNome.value = transacao.nome;
+  inputValor.value = transacao.valor;
+  inputCategoria.value = transacao.categoria;
+
+  tipoAtual = transacao.tipo;
+
+  modalTitle.innerText = "Editar transação";
+  btnSalvar.innerText = "Salvar alterações";
+
+  formError.classList.add("hidden");
+
+  modal.classList.remove("hidden");
+
+  inputNome.focus();
 }
 
 function agruparTransacoesPorData(transacoesParaAgrupar) {
-    const grupos = {};
+  const grupos = {};
 
-    transacoesParaAgrupar.forEach(transacao => {
+  transacoesParaAgrupar.forEach((transacao) => {
+    const data = new Date(transacao.createdAt);
+    const dataFormatada = data.toLocaleDateString("pt-BR");
 
-        const data = new Date(transacao.createdAt);
-        const dataFormatada = data.toLocaleDateString("pt-BR");
+    if (!grupos[dataFormatada]) {
+      grupos[dataFormatada] = [];
+    }
 
-        if (!grupos[dataFormatada]) {
-            grupos[dataFormatada] = [];
-        }
+    grupos[dataFormatada].push(transacao);
+  });
 
-        grupos[dataFormatada].push(transacao);
-
-    });
-
-    return grupos;
+  return grupos;
 }
 
 function abrirModalTransacao() {
-    transacaoParaEditar = null;
+  transacaoParaEditar = null;
+  tipoAtual = "";
+  atualizarTipoVisual();
 
-    inputNome.value = "";
-    inputValor.value = "";
-    inputCategoria.selectedIndex = 0;
+  inputNome.value = "";
+  inputValor.value = "";
+  inputCategoria.selectedIndex = 0;
 
-    modalTitle.innerText = "Adicionar transação";
-    btnSalvar.innerText = "Salvar";
+  modalTitle.innerText = "Adicionar transação";
+  btnSalvar.innerText = "Salvar";
 
-    formError.classList.add("hidden");
+  formError.classList.add("hidden");
 
-    modal.classList.remove("hidden");
+  modal.classList.remove("hidden");
 
-    inputNome.focus();
+  inputNome.focus();
 }
 function fecharModal() {
-    modal.classList.add("closing");
+  modal.classList.add("closing");
 
-    setTimeout(() => {
-        modal.classList.add("hidden");
-        modal.classList.remove("closing");
+  setTimeout(() => {
+    modal.classList.add("hidden");
+    modal.classList.remove("closing");
 
-        transacaoParaEditar = null;
-    }, 250);
+    transacaoParaEditar = null;
+  }, 250);
 }
 
 function salvarTransacao() {
-    const nome = inputNome.value.trim();
-    const valor = Number(inputValor.value);
-    const categoria = inputCategoria.value;
+  const nome = inputNome.value.trim();
+  const valor = Number(inputValor.value);
+  const categoria = inputCategoria.value;
 
-    if (!nome) {
-        mostrarErro("Informe uma descrição válida");
-        return;
-    }
+  if (!nome) {
+    mostrarErro("Informe uma descrição válida");
+    return;
+  }
 
-    if (isNaN(valor) || valor <= 0) {
-        mostrarErro("Informe um valor maior que zero");
-        return;
-    }
+  if (isNaN(valor) || valor <= 0) {
+    mostrarErro("Informe um valor maior que zero");
+    return;
+  }
 
-    if (!categoria) {
-        mostrarErro("Selecione uma categoria");
-        return;
-    }
+  if (!categoria) {
+    mostrarErro("Selecione uma categoria");
+    return;
+  }
 
-    if (!tipoAtual) {
-        mostrarErro("Selecione receita ou despesa");
-        return;
-    }
+  if (!tipoAtual) {
+    mostrarErro("Selecione receita ou despesa");
+    return;
+  }
 
+  if (transacaoParaEditar) {
+    transacaoParaEditar.nome = nome;
+    transacaoParaEditar.valor = valor;
+    transacaoParaEditar.tipo = tipoAtual;
+    transacaoParaEditar.categoria = categoria;
+
+    transacaoParaEditar = null;
+  } else {
     transacoes.push({
-        id: Date.now(),
-        nome,
-        valor,
-        tipo: tipoAtual,
-        categoria,
-        createdAt: new Date().toISOString()
+      id: Date.now(),
+      nome,
+      valor,
+      tipo: tipoAtual,
+      categoria,
+      createdAt: new Date().toISOString(),
     });
+  }
 
-    salvarNoStorage();
-    renderizarTransacoes();
-    fecharModal();
+  salvarNoStorage();
+  renderizarTransacoes();
+  fecharModal();
 }
 
 function mostrarErro(msg) {
-    formError.innerText = msg;
-    formError.classList.remove("hidden");
+  formError.innerText = msg;
+  formError.classList.remove("hidden");
 
-    setTimeout(() => {
-        formError.classList.add("hidden");
-    }, 2500);
+  setTimeout(() => {
+    formError.classList.add("hidden");
+  }, 2500);
 }
 
 function salvarNoStorage() {
-    localStorage.setItem("transacoes", JSON.stringify(transacoes));
+  localStorage.setItem("transacoes", JSON.stringify(transacoes));
 }
 
 function obterTransacoesFiltradas() {
-    let resultado = transacoes;
+  let resultado = [...transacoes];
 
-    if (filtroAtual === "receitas") {
-        resultado = resultado.filter(
-            transacao => transacao.tipo === "income"
-        );
+  resultado.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  if (filtroAtual === "receitas") {
+    resultado = resultado.filter((transacao) => transacao.tipo === "income");
+  }
+
+  if (filtroAtual === "despesas") {
+    resultado = resultado.filter((transacao) => transacao.tipo === "expense");
+  }
+
+  if (pesquisaAtual !== "") {
+    resultado = resultado.filter((transacao) =>
+      transacao.nome.toLowerCase().includes(pesquisaAtual),
+    );
+  }
+
+  return resultado;
+}
+
+function obterTransacoesDaPagina(transacoesFiltradas) {
+  const inicio = (paginaAtual - 1) * transacoesPorPagina;
+  const fim = inicio + transacoesPorPagina;
+
+  return transacoesFiltradas.slice(inicio, fim);
+}
+
+function renderizarPaginacao(transacoesFiltradas) {
+  const totalPaginas = Math.ceil(
+    transacoesFiltradas.length / transacoesPorPagina,
+  );
+
+  paginacao.innerHTML = "";
+
+  if (totalPaginas <= 1) {
+    return;
+  }
+
+  if (paginaAtual > totalPaginas) {
+    paginaAtual = totalPaginas;
+  }
+
+  const btnAnterior = document.createElement("button");
+  btnAnterior.innerText = "← Anterior";
+  btnAnterior.disabled = paginaAtual === 1;
+  btnAnterior.addEventListener("click", () => {
+    paginaAtual--;
+    renderizarTransacoes();
+  });
+
+  paginacao.appendChild(btnAnterior);
+
+  for (let i = 1; i <= totalPaginas; i++) {
+    const btnPagina = document.createElement("button");
+    btnPagina.innerText = i;
+    if (i === paginaAtual) {
+      btnPagina.classList.add("pagina-ativa");
     }
+    btnPagina.addEventListener("click", () => {
+      paginaAtual = i;
+      renderizarTransacoes();
+    });
+    paginacao.appendChild(btnPagina);
+  }
 
-    if (filtroAtual === "despesas") {
-        resultado = resultado.filter(
-            transacao => transacao.tipo === "expense"
-        );
-    }
+  const btnProxima = document.createElement("button");
+  btnProxima.innerText = "Próximo →";
+  btnProxima.disabled = paginaAtual === totalPaginas;
 
-    if (pesquisaAtual !== "") {
-        resultado = resultado.filter(transacao =>
-            transacao.nome.toLowerCase().includes(pesquisaAtual)
-        );
-    }
+  btnProxima.addEventListener("click", () => {
+    paginaAtual++;
+    renderizarTransacoes();
+  });
 
-    return resultado;
+  paginacao.appendChild(btnProxima);
 }
 
 function atualizarFiltroVisual() {
-    btnTodas.classList.remove("filtro-ativo");
-    btnReceitas.classList.remove("filtro-ativo");
-    btnDespesas.classList.remove("filtro-ativo");
+  btnTodas.classList.remove("filtro-ativo");
+  btnReceitas.classList.remove("filtro-ativo");
+  btnDespesas.classList.remove("filtro-ativo");
 
-    if (filtroAtual === "todas") {
-        btnTodas.classList.add("filtro-ativo");
-    }
+  if (filtroAtual === "todas") {
+    btnTodas.classList.add("filtro-ativo");
+  }
 
-    if (filtroAtual === "receitas") {
-        btnReceitas.classList.add("filtro-ativo");
-    }
+  if (filtroAtual === "receitas") {
+    btnReceitas.classList.add("filtro-ativo");
+  }
 
-    if (filtroAtual === "despesas") {
-        btnDespesas.classList.add("filtro-ativo");
-    }
+  if (filtroAtual === "despesas") {
+    btnDespesas.classList.add("filtro-ativo");
+  }
 }
 
+function atualizarTipoVisual() {
+    btnModalReceita.classList.remove("tipo-ativo");
+    btnModalDespesa.classList.remove("tipo-ativo");
+
+    if (tipoAtual === "income") {
+        btnModalReceita.classList.add("tipo-ativo");
+    }
+
+    if (tipoAtual === "expense") {
+        btnModalDespesa.classList.add("tipo-ativo");
+    }
+}
+btnConfirmarDelete.addEventListener("click", () => {
+  if (!transacaoParaExcluir) return;
+
+  transacoes = transacoes.filter(
+    (transacao) => transacao.id !== transacaoParaExcluir.id,
+  );
+
+  salvarNoStorage();
+  renderizarTransacoes();
+
+  fecharDeleteModal();
+});
+
+btnCancelarDelete.addEventListener("click", fecharDeleteModal);
 btnSalvar.addEventListener("click", salvarTransacao);
 btnNovaTransacao.addEventListener("click", abrirModalTransacao);
 btnModalReceita.addEventListener("click", () => {
     tipoAtual = "income";
+    atualizarTipoVisual();
+    inputNome.focus();
 });
 
 btnModalDespesa.addEventListener("click", () => {
     tipoAtual = "expense";
+    atualizarTipoVisual();
+    inputNome.focus();
 });
 
 btnFechar.addEventListener("click", fecharModal);
 
+inputNome.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        inputValor.focus();
+    }
+});
+
+inputValor.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        inputCategoria.focus();
+    }
+});
+
+inputCategoria.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        btnSalvar.focus();
+    }
+});
+
 btnReceitas.addEventListener("click", () => {
-    filtroAtual = "receitas";
+  filtroAtual = "receitas";
+  paginaAtual = 1;
 
-    const resultado = obterTransacoesFiltradas();
-
-    renderizarTransacoes();
-    atualizarFiltroVisual();
+  renderizarTransacoes();
+  atualizarFiltroVisual();
 });
 
 btnDespesas.addEventListener("click", () => {
-    filtroAtual = "despesas";
-    renderizarTransacoes();
-    atualizarFiltroVisual();
+  filtroAtual = "despesas";
+  paginaAtual = 1;
+
+  renderizarTransacoes();
+  atualizarFiltroVisual();
 });
 
 btnTodas.addEventListener("click", () => {
-    filtroAtual = "todas";
-    renderizarTransacoes();
-    atualizarFiltroVisual();
+  filtroAtual = "todas";
+  paginaAtual = 1;
+  renderizarTransacoes();
+  atualizarFiltroVisual();
 });
 
 inputPesquisa.addEventListener("input", () => {
-    pesquisaAtual = inputPesquisa.value.toLowerCase();
+  pesquisaAtual = inputPesquisa.value.toLowerCase();
+  paginaAtual = 1;
 
-    renderizarTransacoes();
+  renderizarTransacoes();
 });
 
 carregarTransacoes();
 renderizarTransacoes();
-
-

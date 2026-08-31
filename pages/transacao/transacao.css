@@ -79,6 +79,7 @@ button:hover {
     flex: 1;
     padding: 40px;
     overflow-y: auto;
+    height: 100vh;
 }
 
 .transacoes-header {
@@ -94,6 +95,37 @@ button:hover {
 .transacoes-header p {
     color: #111827;
     font-size: 15px;
+}
+
+.transacao-acoes {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.transacao-acoes button {
+    padding: 6px;
+    background:transparent;
+    color: #111827;
+}
+
+.transacao-acoes svg {
+    width: 18px;
+    height: 18px;
+}
+
+.transacao-item > span {
+    width: 120px;
+    text-align: right;
+}
+
+.transacao-acoes button:hover {
+    background: #495057;
+    transform: scale(1.1);
+}
+
+.transacao-acoes button {
+    transition: 0.2s ease;
 }
 
 /* =========================
@@ -208,6 +240,7 @@ button:hover {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
     margin-top: 12px;
     transition: 0.2s ease;
+    animation: aparecerLista 0.25s ease;
 }
 
 .mensagem-vazia {
@@ -350,6 +383,12 @@ button:hover {
     border-radius: 8px;
 }
 
+.modal-content input:focus,
+.modal-content select:focus {
+    outline: none;
+    box-shadow: none;
+}
+
 .tipo-transacao {
     display: flex;
     gap: 8px;
@@ -357,6 +396,12 @@ button:hover {
 
 .tipo-transacao button {
     flex: 1;
+}
+
+.tipo-transacao .tipo-ativo {
+    background: #111827;
+    color: white;
+    outline: 1px solid white;
 }
 
 /* =========================
@@ -411,4 +456,33 @@ button:disabled {
 .filtro-ativo {
     background: #111827 !important;
     color: white !important;
+}
+
+.paginacao {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.paginacao button{
+    padding:8px 12px;
+}
+
+.paginacao .pagina-ativa {
+    background: #111827;
+    color: white;
+    font-weight: 700;
+}
+
+@keyframes aparecerLista {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
